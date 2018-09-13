@@ -1,0 +1,52 @@
+{
+  "name": "runnershigh",
+  "version": "0.0.2",
+  "description": "Having an exercise routine is a factor in healthy living — I produced Runners’ High as a tool to aid enthusiast athletes. The project is the work of myself (more of my work is available at josh-thompson.com), with design and computer development guidance from the tutors in the School of Art, Design and Architecture at the University of Huddersfield.",
+  "main": "main.js",
+  "dependencies": {
+    "browser-sync": "^2.23.3",
+    "gulp-sass": "^3.1.0",
+    "gulp-watch": "^4.3.11",
+    "npm-assets": "^0.1.2"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "josh",
+    "thompson",
+    "front",
+    "end",
+    "back",
+    "end",
+    "web",
+    "development",
+    "PHP",
+    "Javascript",
+    "jQuery",
+    "CSS",
+    "HTML",
+    "Adobe",
+    "CC",
+    "runners",
+    "high",
+    "endorphins",
+    "#hudGDA",
+    "University",
+    "of",
+    "Huddersfield",
+    "ADA",
+    "RFID",
+    "Processing",
+    "product",
+    "technology",
+    "digital",
+    "jogging",
+    "exercise"
+  ],
+  "author": "Joshua",
+  "license": "ISC"
+}

@@ -1,0 +1,228 @@
+$blue : #454E69;
+$red : #ff7755;
+
+@import 'animate.css';
+@import 'modaal';
+@import 'animations';
+@import 'fonts';
+@import 'header';
+@import 'nav';
+@import 'modal-theme';
+@import 'record-activity';
+@import 'footer';
+@import 'responsive';
+
+html {
+	background: $red;
+}
+
+*, ::after, ::before {
+	box-sizing: border-box;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+	border-bottom: 1px dotted;
+}
+
+a:visited {
+	color: inherit;
+}
+
+a:hover {
+	border-bottom-style: solid;
+}
+
+.current {
+	font-weight: 500;
+}
+
+body {
+	margin: 0;
+	font-family: "Branding", sans-serif;
+}
+
+.hidden {
+	display: none;
+}
+
+.clearfix::after {
+	content: "";
+  clear: both;
+  display: table;
+}
+
+#site-wrapper {
+	position: relative;
+	min-height: 100vh;
+	background-color: $red;
+	left: 0;
+	transition: left 0.7s ease-out;
+
+	&.active {
+		left: calc(-100% + 20px);
+	}
+
+}
+
+#site-wrapper.modal-open {
+	-webkit-filter: saturate(0) blur(10px);
+	-moz-filter: saturate(0) blur(10px);
+	-o-filter: saturate(0) blur(10px);
+	-ms-filter: saturate(0) blur(10px);
+	filter: saturate(0) blur(10px);
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='10');
+}
+
+.container {
+	margin: 0 auto;
+	width: calc(100% - 1em);
+}
+
+h2 {
+	color: white;
+	font-family: "Branding", sans-serif;
+	font-weight: normal;
+	font-size: 4em;
+	text-align: center;
+	line-height: 1;
+	margin: 0;
+}
+
+h3 {
+	color: white;
+	font-family: "Branding", sans-serif;
+	font-weight: normal;
+	font-size: 1.7em;
+	text-align: center;
+	margin: 0;
+}
+
+.centre-container {
+	display: -webkit-box; 
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex; 
+	display: flex;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	-ms-flex-align: center;
+	/*-webkit-align-items: center;
+	align-items: center;*/
+	justify-content: center;
+	flex-direction: column;
+	/* Height of the window - the header */
+	min-height: calc(100vh - 5em);
+	width: 100%;
+}
+
+.horizontal-centre {
+	margin: 0 auto;
+}
+
+.modal-link {
+	font-family: "Branding", sans-serif;
+	font-weight: normal;
+	color: white;
+	cursor: pointer;
+}
+
+#leaderboard {
+	width: 100%;
+	grid-area: leaderboard;
+}
+
+main {
+	padding-bottom: 2em;
+}
+
+main p {
+	font-family: "Branding", sans-serif;
+	font-variant-numeric: tabular-nums;
+}
+
+.emphasis {
+	font-style: italic;
+}
+
+.error-message {
+	color: white;
+	font-weight: regular;
+	font-size: 2em;
+	text-align: center;
+}
+
+/* Tables 
+=====================================*/
+
+table {
+
+	border: none;
+	border-spacing: 0;
+	font-size: 0.7em;
+	width: 100%;
+	
+	thead {
+
+		th {
+
+			border: none;
+			font-weight: 500;
+
+			&:hover {
+				color: rgba(0, 0, 0, 0.6);
+				cursor: pointer;
+				font-weight: bold;
+			}
+
+		}
+
+		td {
+			padding-right: 2em;
+		}
+
+	}
+
+	td {
+		border: none;
+		text-overflow: ellipsis;
+	  overflow: hidden;
+	}
+
+	tbody, tfoot {
+		
+		font-variant-numeric: tabular-nums;
+		font-weight: normal;
+		text-align: center;
+
+		tr:nth-child(even) td {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+
+	}
+
+}
+
+.selected {
+	background-color: rgba(255, 255, 255, 0.1);
+	font-weight: 500;
+}
+
+#leaderboard {
+
+	.col1, .col3 {
+		width: 6em;
+	}
+	
+	thead tr th {
+		background: initial;
+	}
+
+	thead tr th:hover {
+		color: initial;
+		cursor: default;
+		font-weight: 500;
+	}
+
+}

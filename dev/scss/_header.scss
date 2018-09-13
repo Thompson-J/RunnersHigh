@@ -1,0 +1,71 @@
+/* Main header 
+=====================================*/
+
+header {
+	position: sticky;
+	top: 0;
+	left: 0;
+	height: 5em;
+	width: 100%;
+	padding: 1em 1.3em;
+	background: rgba(255,119,85,0.7);
+	z-index: 1;
+}
+
+#logo {
+
+	text-decoration: none;
+	position: relative;
+	width: 1.7em;
+	top: 0.1em;
+	margin: 0;
+	float: left;
+	font-family: "Branding", sans-serif;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 1em;
+	color: white;
+	line-height: 1;
+	border-bottom: none;
+
+	&:hover::after  {
+		border-bottom: 1px dotted white;
+	}
+
+	img {
+		vertical-align: bottom;
+		height: 1.7em;
+		margin: 0;
+	}
+
+}
+
+header nav {
+	display: none;
+	float: right;
+}
+
+header nav ul {
+	height: 0.7em;
+	line-height: 1em;
+	white-space: nowrap;
+}
+
+header nav li {
+	list-style: none;
+	margin: 0 1em;
+	display: inline;
+	float: left;
+	text-decoration: none;
+	font-size: 1em;
+	font-weight: normal;
+	color: white;
+}
+
+header nav li:first-child {
+	margin-left: 0;
+}
+
+header nav li:last-child {
+	margin-right: 0;
+}

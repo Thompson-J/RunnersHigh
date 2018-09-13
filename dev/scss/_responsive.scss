@@ -1,0 +1,42 @@
+@media (min-width: 550px) {
+
+	#logo {
+		min-width: 8.8em;
+	}
+
+	table {
+		font-size: 1em !important;
+	}
+
+	table th, table td{
+		padding: 10px;
+	}
+
+}
+
+@media (min-width: 768px) {
+
+	#logo::after {
+		content: "RUNNERS' HIGH";
+		text-decoration: none;
+	}
+
+	header nav {
+		display: inline-block;
+	}
+
+	.burger-button {
+		display: none;
+	}
+
+	/* Set to 768px wide */
+	.container, .centre-container {
+    width: 100%;
+    padding: 0px calc(50% - 384px);
+	}
+
+	.modal-dialog {
+		min-width: calc(100% - 50px);
+	}
+
+}

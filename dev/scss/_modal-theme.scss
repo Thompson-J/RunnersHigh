@@ -1,0 +1,176 @@
+.modaal-content-container {
+  padding: 2em 0;
+}
+
+/* Login and register
+=====================================*/
+
+h1 {
+  font-family: 'Branding', sans-serif;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 3em;
+  text-align: center;
+  line-height: 0.9em;
+  margin-top: 10px;
+  color: $blue;
+}
+
+form {
+  button {
+    display: block;
+    width: 100%;
+    font-family: 'Branding', sans-serif;
+    font-weight: bold;
+    font-style: normal;
+    font-size: 1em;
+    text-align: center;
+    border: none;
+    background: white;
+    padding: 5px 10px;
+    margin: 0;
+  }
+}
+
+#login-form, #register-form {
+
+  input {
+    display: block;
+    width: 100%;
+    font-family: 'Branding', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1em;
+    text-align: center;
+    border: none;
+    background: white;
+    padding: 5px 10px;
+    margin: 0;
+  }
+
+  .input-rule {
+
+    display: block;
+    width: 100%;
+    border-top: solid #454E69 0.25em;
+
+    &::before {
+      display: block;
+      max-height: 0;
+      overflow-y: hidden;
+      width: 100%;
+      background-color: $red;
+      color: white;
+      padding: 0;
+      text-align: center;
+      transition: all 1s;
+    }
+
+  }
+
+  .input-error {
+    &::before {
+      max-height: 50px !important;
+      padding: 5px !important;
+    }
+  }
+
+  .remember-user {
+    display: block;
+    font-family: 'Branding', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1em;
+    text-align: center;
+    color: $blue;
+    margin-top: 1em;
+    margin-bottom: 0;
+  }
+
+  input#remember-user {
+    display: inline;
+    width: initial;
+    min-width: initial;
+  }
+
+  button {
+    font-family: 'Branding', sans-serif;
+    font-weight: 'semibold';
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    background-color: $blue;
+    width: initial;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px auto;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+}
+
+#login-form {
+
+  #bad-email {
+    &::before {
+      content: "Incorrect email";
+    }
+  }
+
+  #bad-password {
+    &::before {
+      content: "Incorrect password";
+    }
+  }
+
+  .remember-user {
+
+    &::selection {
+      background: none;
+    }
+
+    span {
+      &::selection {
+        background: none;
+      }
+    }
+
+  }
+
+  #reset-link {
+    color: $blue;
+    font-family: 'Branding', sans-serif;
+    font-style: italic;
+    text-align: center;
+  }
+
+}
+
+#register-form {
+
+  #bad-email {
+    &::before {
+      content: "Invalid format";
+    }
+  }
+
+  #bad-name {
+    &::before {
+      content: "Must be between 3 and 20 characters.";
+    }
+  }
+
+  #bad-password {
+    &::before {
+      content: "Must contain 1 lowercase letter, 1 uppercase letter, a number and be at least 8 characters.";
+    }
+  }
+
+  #bad-password-confirmation {
+    &::before {
+      content: "Passwords don't match.";
+    }
+  }
+
+}

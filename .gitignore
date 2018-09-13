@@ -1,0 +1,6 @@
+**/_gsdata_/**
+psl-config.php
+node_modules/**
+.DS_Store
+*.sublime-workspace
+package-lock.json

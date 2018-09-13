@@ -1,0 +1,94 @@
+/* Burger button 
+=====================================*/
+
+.burger-button {
+	
+	position: relative;
+	display: inline-block;
+	float: right;
+	cursor: pointer;
+	border: none;
+	padding: 0;
+	background: none;
+	font-size: 3em;
+	transition: all 0.7s ease-out;
+	height: 0.5em;
+	line-height: 1em;
+	white-space: nowrap;
+
+	.bar1, .bar2, .bar3 {
+		width: 20px;
+		height: 3px;
+		background-color: white;
+		margin: 3px 0;
+		-webkit-transition: ease-in-out .25s;
+		-moz-transition: ease-in-out .25s;
+		-o-transition: ease-in-out .25s;
+		-ms-transition: ease-in-out .25s;
+		border-radius: 2px;
+	}
+
+	.active.bar1 {
+		-webkit-transform: rotate(-45deg) translate(-3px, 4px);
+		transform: rotate(-45deg) translate(-3px, 4px);
+	}
+
+	.active.bar2 {
+		opacity: 0;
+	}
+
+	.active.bar3 {
+		-webkit-transform: rotate(45deg) translate(-5px, -6px);
+		transform: rotate(45deg) translate(-5px, -6px);
+	}
+
+}
+
+
+/* Sidebar 
+=====================================*/
+
+.sidenav {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	top: 0;
+	right: 0;
+	background-color: #111;
+	overflow-x: hidden;
+	transition: right, width 0.7s ease-out;
+	padding-top: 1em;
+	z-index: 2;
+
+	&.active {
+		width: calc(100% - 20px);
+	}
+
+	.burger-button {
+		right: 0.5em;
+	}
+
+	ul {
+		list-style-type: none;
+		-webkit-padding-start: 0;
+	}
+
+	a, a:visited {
+		padding: 8px;
+		text-decoration: none;
+		font-size: 1.5em;
+		font-weight: bold;
+		color: white;
+		display: block;
+		transition: color 0.3s;
+		text-align: center;
+		border: none;
+	}
+
+	a:hover {
+		color: $red;
+		border: none;
+	}
+
+}
+
