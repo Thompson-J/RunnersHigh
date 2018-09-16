@@ -62,6 +62,14 @@ $('#record_btn').click(function() {
 		//console.log(duration)
 		// Stop recording
 		clearTimeout(t);
+
+		recording = false;
+
+		getDistance();
+
+		setTimeout(function() {
+			$('#distance').text(distance + ' meters');
+		}, 1000);
 	
 	}
 });
@@ -73,10 +81,88 @@ $('#record_submit').click(function() {
 
 	submit_activity.activity = document.getElementById('activity').value;
 	submit_activity.date = date;
-	submit_activity.distance = 1;
+	submit_activity.distance = distance + ' meters';
 	submit_activity.start_time = start_time.format('HH:mm:ss');
 	submit_activity.finish_time = finish_time.format('HH:mm:ss');
 	submit_activity.duration = duration;
 	submit_activity.submit();
 })
 
+function getLocation() {
+    if (navigator.geolocation && recording) {
+      	navigator.geolocation.getCurrentPosition(trackLocations, showError);
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            console.log("User denied the request for Geolocation.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            console.log("Location information is unavailable.");
+            break;
+        case error.TIMEOUT:
+            console.log("The request to get user location timed out.");
+            break;
+        case error.UNKNOWN_ERROR:
+            console.log("An unknown error occurred.");
+            break;
+    }
+}
+
+var geolocation = [];
+var coords;
+var waypoint = [];
+var lastWaypoint;
+var startPoint;
+var finishPoint;
+
+function trackLocations(coordinates) {
+	geolocation.push(coordinates['coords']);
+	let waypointCount = waypoint.length + 1;
+	waypoint.push('Waypoint ' + waypointCount)
+	lastWaypoint = waypoint[waypoint.length - 1]
+	console.log(lastWaypoint)
+
+	var markerOptions = {
+    icon: tomtom.L.icon({
+        iconUrl: '/tomtom/images/marker-black.png',
+        iconSize: [30, 34],
+        iconAnchor: [15, 34]
+    })
+	};
+	tomtom.L.marker([geolocation[geolocation.length - 1].latitude, geolocation[geolocation.length - 1].longitude], markerOptions).bindPopup(lastWaypoint).addTo(map);
+}
+
+function getDistance() {
+
+	//startPoint = geolocation[0].latitude + ',' + geolocation[0].longitude;
+	//finishPoint = geolocation[geolocation.length - 1].latitude + ',' + geolocation[0].longitude;
+	//var points = '53.431320,-2.433381:53.433481,-2.429637';
+	var points = '';
+
+	// Loop through the waypoints
+	for( var i = 0; i < geolocation.length; i ++ ) {
+		points += geolocation[i].latitude + ',' + geolocation[i].longitude + ':'
+	}
+
+	points = points.replace(/\:$/, '');
+	console.log(points)
+
+	// locations format = 'start lat','start long':'finish lat','finish long'
+	tomtom.routing().locations(points)
+  .go()
+  .then(function(routeGeoJson) {
+  	var route = tomtom.L.geoJson(routeGeoJson, {
+    	style: {color: '#00d7ff', opacity: 0.6, weight: 6}
+    }).addTo(map);
+		map.fitBounds(route.getBounds(), {padding: [5, 5]});
+  	console.log(routeGeoJson)
+    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
+  });
+}
+
+window.setInterval(getLocation, 5000);

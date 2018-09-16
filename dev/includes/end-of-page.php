@@ -15,5 +15,13 @@
 	<script type="text/javascript" src="<?php echo HOMEURL; ?>js/main.js"></script>
 	<script type="text/javascript" src="<?php echo HOMEURL; ?>js/record-activity.js"></script>
 	<script type="text/javascript">loginCheck();</script>
+	<link rel='stylesheet' type='text/css' href='<?php echo HOMEURL; ?>tomtom/map.css'/> 
+  <script src='<?php echo HOMEURL; ?>tomtom/tomtom.min.js'></script> 
+  <script>
+		tomtom.setProductInfo('Runners High', '1');
+		var map = new tomtom.L.map('map', {
+			key: 'KnsAaGwLdpHmAeEIqvGYOfQXTZxXczGx'
+		}).locate({setView: true, maxZoom: 16});
+  </script>
 
 </html>
