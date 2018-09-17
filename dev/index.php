@@ -10,7 +10,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 ?>
 
-	<body><?php var_dump( HOMEURL ); ?>
+	<body>
 	
 		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
