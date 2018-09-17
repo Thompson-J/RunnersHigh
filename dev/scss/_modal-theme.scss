@@ -151,7 +151,7 @@ form {
 
   #bad-email {
     &::before {
-      content: "Invalid format";
+      content: "Invalid format or email already used";
     }
   }
 

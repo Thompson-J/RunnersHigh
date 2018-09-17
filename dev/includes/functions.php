@@ -1,6 +1,7 @@
 <?php
 
 include_once 'psl-config.php';
+include_once 'db_connect.php';
 
 function sec_session_start() {
 		$session_name = 'sec_session_id';   // Set a custom session name 
@@ -9,7 +10,8 @@ function sec_session_start() {
 		$httponly = true;
 		// Forces sessions to only use cookies.
 		if (ini_set('session.use_only_cookies', 1) === FALSE) {
-				header("Location: ../error.php?err=Could not initiate a safe session (ini_set)");
+				// Could not initiate a safe session (ini_set)
+				header("Location: ../error_pages/403.php");
 				exit();
 		}
 		// Gets current cookies params.

@@ -1,7 +1,6 @@
 <?php
 
-include_once 'includes/db_connect.php';
-include_once 'includes/functions.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 sec_session_start();
 
@@ -11,7 +10,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 ?>
 
-	<body>
+	<body><?php var_dump( HOMEURL ); ?>
 	
 		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 

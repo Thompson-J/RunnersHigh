@@ -20,9 +20,11 @@ var updateActivity;
 
 function loginCheck() {
 
+	//console.log('attempting auto login')
+
 	$.ajax({
 		url: homeurl + "includes/process_login.php",
-		method: "GET",
+		method: "POST",
 		dataType: "json",
 		success: function(response) {
 
@@ -31,10 +33,10 @@ function loginCheck() {
 			return true;
 
 		},
-		error: function() {
+		error: function(response) {
 
 			//console.log("auto login failed");
-			//promptLogin();
+			//console.log(response)
 			return false;
 
 		}
@@ -157,57 +159,69 @@ function retrieveActivity() {
 
 		// Hash the password before sending it.
 		if (!cookieUsed) password = hex_sha512(password);
-		//console.log(p);
+		//console.log(cookieUsed);
 
-		// AJAX communication with login database
-		$.ajax({
-			url: homeurl + "includes/process_login.php",
-			type: "POST",
-			data: { email: email, p: password },
-			dataType: "json",
-			success: function(response) {
+		// Create a variable in JSON format with the fullname, email and password properties
+		var json = JSON.stringify({ 'email': email, 'password': password });
+		//console.log(json)
 
-				//console.log(response);
+		// Create an AJAX object
+		let http = new XMLHttpRequest();
+		http.open('POST', homeurl + "includes/process_login.php", true);
+		http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+		http.responseType = 'json';
+		//console.log(http)
+		// Send the registation data
+		http.send(json)
 
-				// Remove any login form errors
-				$("#bad-email").removeClass("input-error");
-				$("#bad-password").removeClass("input-error");
+		// Read the response
+		http.onload = function() {
+			// When the operation is complete
+			if (this.readyState == 4) {
 
-				// Create cookies of the login information
-				if ($("#remember-user").is(":checked")) {
-					Cookies.set('email', email, { expires: 7, path: '' });
-					Cookies.set('passwordhash', password, { expires: 7, path: '' })
-				}
+				// If registration is successful
+				if (this.status == 200) {
 
-				// Redirect the user to the activity page
-				window.location.replace(homeurl + "activity/");
+					//console.log(http);
 
-				activity(response);
+					// Remove any login form errors
+					$("#bad-email").removeClass("input-error");
+					$("#bad-password").removeClass("input-error");
 
-			},
-			error: function(jqXHR, textStatus, errorThrown){
+					// Create cookies of the login information
+					if ($("#remember-user").is(":checked")) {
+						Cookies.set('email', email, { expires: 7, path: '' });
+						Cookies.set('passwordhash', password, { expires: 7, path: '' })
+					}
 
-				//console.log("error: " + textStatus + " " + errorThrown);
-				//console.log(jqXHR);
+					// Redirect the user to the activity page
+					window.location.replace(homeurl + "activity/");
 
-				var error = jqXHR.responseJSON.result;
-				//console.log(error);
+					//activity(http.response);
+				
+				} else {
 
-				switch(error) {
-				// If the email address is unrecognised
-					case "user-nonexistant":
-						$("#bad-email").addClass("input-error");
-						break;
+					var error = http.response
+					//console.log(error);
 
-					// If the password is unrecognised
-					case "bad-password":
-						$("#bad-password").addClass("input-error");
-						break;
+					switch(error.result) {
 						
-				};
+						// If the email address is unrecognised
+						case "A user with this email already exists. ":
+							$("#bad-email").addClass("input-error");
+							break;
 
+						// If the password is unrecognised
+						case "Invalid password configuration. ":
+							$("#bad-password").addClass("input-error");
+							break;
+							
+					};
+
+				}
 			}
-		})
+		}
+
 	}
 			
 }
@@ -340,7 +354,7 @@ var form, submit, form_data;
 form = document.getElementById('register-form')
 
 // When the submit button is clicked
-$('#submit').click( function() {
+$('#register-form #submit').click( function() {
 
 	// Name
 	form_data.fullname = form.fullname.value;

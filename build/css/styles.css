@@ -947,7 +947,7 @@ form button {
   text-align: center; }
 
 #register-form #bad-email::before {
-  content: "Invalid format"; }
+  content: "Invalid format or email already used"; }
 
 #register-form #bad-name::before {
   content: "Must be between 3 and 20 characters."; }

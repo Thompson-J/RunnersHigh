@@ -113,30 +113,48 @@ form_data = {
 	},
 	submit : function submit() {
 
-		//console.log(this.email)
-
 		if( this.fullname !== (null || undefined) && this.email !== (null || undefined) && this.password !== (null || undefined) ) {
 
 			// Create a variable in JSON format with the fullname, email and password properties
 			var json = JSON.stringify(this, ['fullname', 'email', 'password']);
-			console.log(json)
+			//console.log(json)
 
 			// Create an AJAX object
 			let http = new XMLHttpRequest();
-			http.open('POST', window.location.origin + '/includes/process_registration.php', true);
+			http.open('POST', homeurl + 'includes/process_registration.php', true);
 			http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+			http.responseType = 'json';
 			// Send the registation data
 			http.send(json)
 
 			// Read the response
 			http.onreadystatechange = function() {
-				//console.log(this);
-				if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-					console.log(http.responseText)
-					retrieveActivity();
-				} else {
-					if (this.status === 403) {
-						alert('Check the details you entered');
+				// When the operation is complete
+				if (this.readyState == 4) {
+
+					// If registration is successful
+					if (this.status == 200) {
+					
+						console.log(http.response)
+						retrieveActivity();
+					
+					} else {
+					
+						var error = (http.response)
+						switch(error.result) {
+
+							// If the email address is unrecognised
+							case "A user with this email already exists. ":
+								$("#bad-email").addClass("input-error");
+								break;
+
+							// If the password is unrecognised
+							case "Invalid password configuration. ":
+								$("#bad-password").addClass("input-error");
+								break;
+								
+						};
+					
 					}
 				}
 			}

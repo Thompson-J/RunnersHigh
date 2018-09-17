@@ -5,7 +5,7 @@ $firstname = explode( " ", $_SESSION['name'] );
 // Get the first name of the user
 $firstname = $firstname[0];
 
-$title = $firstname . TITLE_DELIMITOR . TITLE;
+$title = $firstname . TITLE_DELIMITER . TITLE;
 
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 

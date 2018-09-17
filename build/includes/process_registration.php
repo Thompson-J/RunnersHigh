@@ -9,11 +9,10 @@ header('content-type: application/json');
 $error_msg = null;
 
 // Include functions one time
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/db_connect.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
 
 // receive the JSON Post data
-$data = json_decode( file_get_contents( 'php://input' ), true );
+$data = (array) json_decode( file_get_contents( 'php://input' ), true );
 
 // Sanitize and validate the data passed in
 $email = filter_var($data['email'], FILTER_VALIDATE_EMAIL, FILTER_SANITIZE_STRING);
