@@ -47,6 +47,11 @@ function loginCheck() {
 // Do these things after loading the page
 $(document).ready(function() {
 
+	// Add current class to links to the page we're on
+	let currentPage = document.location.href.match(/\/\/.+/)
+	console.log(currentPage)
+	$('a[href$="' + currentPage + '"]').addClass('current')
+
 	// Burger menu button
 	$(".burger-button").click(function() {
 

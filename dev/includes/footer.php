@@ -2,15 +2,15 @@
 
 		<p>&copy; 2018 Runners&apos; High</p>
 		<ul class="clearfix">
-			<li><a href="<?php echo HOMEURL ?>" class="current">Home</a></li>
+			<li><a href="<?php echo HOMEURL ?>">Home</a></li>
 			<?php 
 
 				$login_check = login_check($mysqli);
 
 				if ($login_check['result'] === true) {
 
-					echo '<li><a href="' . HOMEURL . 'activity" class="current">Activity</a></li>
-					<li><a href="' . HOMEURL . 'record-activity">Record Activity</a></li>
+					echo '<li><a href="' . HOMEURL . 'activity/">Activity</a></li>
+					<li><a href="' . HOMEURL . 'record-activity/">Record Activity</a></li>
 					<li><a href="' . HOMEURL . 'includes/logout.php">Logout</a></li>';
 				
 				} else {

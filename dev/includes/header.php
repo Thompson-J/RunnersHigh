@@ -16,8 +16,8 @@
 
 		if ($login_check['result'] === true) {
 
-			echo '<li><a href="' . HOMEURL . 'activity">Activity</a></li>
-			<li><a href="' . HOMEURL . 'record-activity">Record Activity</a></li>
+			echo '<li><a href="' . HOMEURL . 'activity/">Activity</a></li>
+			<li><a href="' . HOMEURL . 'record-activity/">Record Activity</a></li>
 			<li><a href="' . HOMEURL . 'includes/logout.php">Logout</a></li>';
 		
 		} else {
@@ -56,8 +56,8 @@
 
 					if ($login_check['result'] === true) {
 
-						echo '<li><a href="' . HOMEURL . 'activity" class="current">Activity</a></li>
-						<li><a href="' . HOMEURL . 'record-activity">Record Activity</a></li>
+						echo '<li><a href="' . HOMEURL . 'activity/">Activity</a></li>
+						<li><a href="' . HOMEURL . 'record-activity/">Record Activity</a></li>
 						<li><a href="' . HOMEURL . 'includes/logout.php">Logout</a></li>';
 					
 					} else {

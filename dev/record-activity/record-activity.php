@@ -1,9 +1,5 @@
 <?php
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
-
-sec_session_start();
-
 $title = "Record Activity" . TITLE_DELIMITER . TITLE;
 
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
