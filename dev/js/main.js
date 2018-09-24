@@ -49,7 +49,7 @@ $(document).ready(function() {
 
 	// Add current class to links to the page we're on
 	let currentPage = document.location.href.match(/\/\/.+/)
-	console.log(currentPage)
+	//console.log(currentPage)
 	$('a[href$="' + currentPage + '"]').addClass('current')
 
 	// Burger menu button
@@ -79,9 +79,12 @@ $(document).ready(function() {
 
 			$(this).click(function() {
 
+				// Remove class from all col elements in colgroup
 				$(this).parents('table').find('col').removeClass('selected');
+				// Add class to a clicked col element
 				$(this).parents('table').find('col').eq(col).addClass('selected');
 
+				// Descending order
 				if ($(this).is('.asc')) {
 
 					$(this).removeClass('asc');
@@ -89,6 +92,7 @@ $(document).ready(function() {
 					sortOrder = -1;
 				
 				} else {
+				// Ascending order
 				
 					$(this).addClass('asc selected');
 					$(this).removeClass('desc');
@@ -99,13 +103,16 @@ $(document).ready(function() {
 				$(this).siblings().removeClass('asc selected');
 				$(this).siblings().removeClass('desc selected');
 
-				// Make an array of the contents of a clicked column
+				// Make an array of the contents the table
 				var arrData = $(this).parents('table').find('tbody > tr:has(td)').get();
 
 				// Sort this array
 				arrData.sort(function(a, b) {
 
 					var val1, val2;
+
+					val1 = $(a).children('td').eq(col).text().toUpperCase();
+					val2 = $(b).children('td').eq(col).text().toUpperCase();
 
 					// For each time/ date cell (a and b) set variables the datetime attribute value e.g 2018:01:31, 00:57:02
 					$(a).children('td').eq(col).children('time').each(function() {
@@ -119,15 +126,10 @@ $(document).ready(function() {
 
 					});
 
-					//console.log(a, b);
-
-					// 
-					val1 = $(a).children('td').eq(col).text().toUpperCase();
-					val2 = $(b).children('td').eq(col).text().toUpperCase();
 					if ($.isNumeric(val1) && $.isNumeric(val2))
 						return sortOrder == 1 ? val1 - val2 : val2 - val1;
 					else
-						return (val1 < val2) ? -sortOrder : (val1 > val2) ? sortOrder : 0;
+						return val1 < val2 ? -sortOrder : (val1 > val2) ? sortOrder : 0;
 				});
 				//$(table + ' tbody tr').remove()
 				$.each(arrData, function(index, row) {
@@ -243,6 +245,7 @@ function activity(response) {
 	if (!updateActivity) {
 
 		var activity = response.data.activity;
+		console.log(activity)
 		// activity.length = how many run sessions the runner's logged
 
 		// Add the runner's runs to the HTML table
@@ -260,14 +263,12 @@ function activity(response) {
 			var d = new Date(row.date);
 
 			// Short day, date with ordinal and short month 
-			momentdate = moment(d, 'YYYY-DD-MM', true).format('ddd Do MMM');
+			momentdate = moment(d, 'YYYY-DD-MM', true).format('ddd Do MMM YYYY');
 
 			date = momentdate.replace(/(\d+)([a-z]+)/, "$1<sup>$2</sup>");
 
-			var session = i+1;
-
 			// Add the JSON to the HTML markup
-			var rowMarkup = "<tr><td>" + session + "</td><td>" + row.activity + "</td><td><time datetime='" + row.date + "'>" + date + "</time></td><td>" + distance + "</td><td>" + row.start_time + "</td><td>"  + row.finish_time + "</td><td>" + row.duration + "</td></tr>";
+			var rowMarkup = "<tr><td><a href='analyse/?s=" + activity[i].session_id + "'>" + activity[i].session_id + "</a></td><td>" + parseInt(i+1) + "</td><td>" + row.activity + "</td><td><time datetime='" + row.date + "'>" + date + "</time></td><td>" + distance + "</td><td>" + row.start_time + "</td><td>"  + row.finish_time + "</td><td>" + row.duration + "</td></tr>";
 
 			// Display the JSON and HTML markup in the console
 			//console.log(rowMarkup);
@@ -454,10 +455,21 @@ submit_activity = {
 		return this._duration
 
 	},
+	set waypoints(value) {
+
+		this._waypoints = value;
+
+	},
+	get waypoints() {
+
+		// Get the waypoints
+		return this._waypoints
+
+	},
 	submit : function submit() {
 
 		// Create a variable in JSON format with the activity, date, distance, starttime, finishtime and duration properties
-		var json = JSON.stringify(this, ['activity', 'date', 'distance', 'start_time', 'finish_time', 'duration']);
+		var json = JSON.stringify(this, ['activity', 'date', 'distance', 'start_time', 'finish_time', 'duration', 'waypoints']);
 		console.log(json)
 
 		// Create an AJAX object
@@ -477,5 +489,25 @@ submit_activity = {
 			}
 		}
 
+	}
+}
+
+function getActivityById(id) {
+	// Create an AJAX object
+	let http = new XMLHttpRequest();
+	http.open('POST', window.location.origin + '/includes/activityById.php', true);
+	http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+	http.responseType = 'json';
+	// Request the activity data
+	http.send('{"s": ' + id + '}')
+
+	// Read the response
+	http.onreadystatechange = function() {
+		//console.log(this);
+		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+			console.log(this.response)
+		} else if (this.status == 400) {
+			alert("There's something wrong with the data provided");
+		}
 	}
 }

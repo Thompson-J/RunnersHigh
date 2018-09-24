@@ -208,7 +208,7 @@ function esc_url($url) {
 
 function activity($user_id, $mysqli) {
 
-	if ($stmt = $mysqli->prepare("SELECT activity, distance, `date`, start_time, finish_time, duration
+	if ($stmt = $mysqli->prepare("SELECT session_id, activity, distance, `date`, start_time, finish_time, duration
 															FROM user_sessions
 															WHERE user_id = ?
 															")) {
@@ -301,10 +301,10 @@ $onehourago = $now - (60 * 60);
 function manual_entry($userid, $data, $mysqli) {
 
 	// Write SQL to insert data into the database
-	$insert_stmt = $mysqli -> prepare("INSERT INTO user_sessions (user_id, activity, distance, `date`, start_time, finish_time, duration) VALUES (?, ?, ?, ?, ?, ?, ?)");
+	$insert_stmt = $mysqli -> prepare("INSERT INTO user_sessions (user_id, activity, waypoints, distance, `date`, start_time, finish_time, duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
 	// Bind activity data to the SQL statement
-	$insert_stmt -> bind_param('issssss', $userid, $data['activity'], $data['distance'], $data['date'], $data['start_time'], $data['finish_time'], $data['duration']);
+	$insert_stmt -> bind_param('isssssss', $userid, $data['activity'], $data['waypoints'], $data['distance'], $data['date'], $data['start_time'], $data['finish_time'], $data['duration']);
 
 	// Insert the activity into the database
 	if ( $insert_stmt->execute() ) {
@@ -320,4 +320,71 @@ function manual_entry($userid, $data, $mysqli) {
 		
 	}
 
+}
+
+function analyse($userid, $session, $mysqli) {
+
+	// Select the run
+	$stmt = $mysqli->prepare("SELECT activity, waypoints, distance, `date`, start_time, finish_time, duration
+														FROM user_sessions
+														WHERE user_id = $userid
+														ORDER BY session_id");
+
+	$stmt->execute();
+
+	$result = $stmt->get_result();
+	
+	if($result->num_rows === 0) exit('No rows');
+	
+	while($row = $result->fetch_assoc()) {
+	
+	  $temp[] = $row;
+	
+	}
+
+	$activity = $temp[$session];
+
+	// Return the information about the activity
+	return array('result' => true, 'data' => $activity);
+
+}
+
+function activityById($user_id, $session_id, $mysqli) {
+
+	$session = [];
+
+	// Select the run
+	$stmt = $mysqli->prepare("SELECT *
+														FROM user_sessions
+														WHERE user_id = ? AND session_id = ?
+														LIMIT 1");
+
+	$stmt->bind_param('ii', $user_id, $session_id);
+	$stmt->execute();   // Execute the prepared query.
+	
+	$result = $stmt->get_result();
+
+	$num_of_rows = $result->num_rows;
+
+	if($num_of_rows === 1) {
+
+		while ($row = $result->fetch_assoc()) {
+			if (array_key_exists('waypoints', $row)) {
+				$row['waypoints'] = json_decode($row['waypoints']);
+			}
+			$session = $row;
+		}
+		
+		// Return the information about the activity
+		return array('result' => true, 'data' => $session);
+	
+	} else {
+
+
+		// Return the information about the activity
+		return array('result' => false, 'data' => null);
+
+	}
+
+	
 }

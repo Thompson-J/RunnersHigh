@@ -40,3 +40,9 @@
 	}
 
 }
+
+@media (min-width: 1024px) {
+	.container, .centre-container {
+		padding: 0px calc(50% - 500px)
+	}
+}

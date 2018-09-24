@@ -1,3 +1,5 @@
+var geolocation = [];
+
 // When the page has loaded
 $(function() {
 
@@ -96,6 +98,10 @@ $(function() {
 			submit_activity.start_time = start_time.format('HH:mm:ss');
 			submit_activity.finish_time = finish_time.format('HH:mm:ss');
 			submit_activity.duration = duration;
+			// Convert the geolocation array into a string
+			submit_activity.waypoints = JSON.stringify(geolocation);
+
+			console.log(submit_activity)
 			submit_activity.submit();
 		})
 
@@ -103,7 +109,7 @@ $(function() {
 		    if (navigator.geolocation && recording) {
 		      	navigator.geolocation.getCurrentPosition(trackLocations, showError);
 		    } else {
-		        console.log("Geolocation is not supported by this browser.");
+		        //console.log("Geolocation is not supported by this browser.");
 		    }
 		}
 
@@ -124,7 +130,6 @@ $(function() {
 		  }
 		}
 
-		var geolocation = [];
 		var coords;
 		var waypoint = [];
 		var lastWaypoint;
@@ -137,6 +142,7 @@ $(function() {
 			waypoint.push('Waypoint ' + waypointCount)
 			lastWaypoint = waypoint[waypoint.length - 1]
 			console.log(lastWaypoint)
+			console.log(geolocation)
 
 			var markerOptions = {
 		    icon: tomtom.L.icon({

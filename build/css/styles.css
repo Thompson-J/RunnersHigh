@@ -986,6 +986,10 @@ form button {
   90% {
     box-shadow: 0px 0px 5px 13px rgba(173, 0, 0, 0); } }
 
+#map {
+  height: 500px;
+  width: 500px; }
+
 footer {
   width: 100%;
   background: #454E69;
@@ -1028,6 +1032,10 @@ footer ul li {
     padding: 0px calc(50% - 384px); }
   .modal-dialog {
     min-width: calc(100% - 50px); } }
+
+@media (min-width: 1024px) {
+  .container, .centre-container {
+    padding: 0px calc(50% - 500px); } }
 
 html {
   background: #ff7755; }
