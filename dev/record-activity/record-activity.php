@@ -37,7 +37,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 <?php
 
 $addscripts = "<link rel='stylesheet' type='text/css' href='" . HOMEURL . "tomtom/map.css'/>
-  <script src=" . HOMEURL . "tomtom/tomtom.min.js'></script>
-	<script type='text/javascript' src=" . HOMEURL . "js/record-activity.js'></script>";
+  <script src='" . HOMEURL . "tomtom/tomtom.min.js'></script>
+	<script type='text/javascript' src='" . HOMEURL . "js/record-activity.js'></script>";
 
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
