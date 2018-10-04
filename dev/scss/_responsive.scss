@@ -39,6 +39,49 @@
 		min-width: calc(100% - 50px);
 	}
 
+	#activity {
+
+		colgroup {
+
+			display: table-column-group;
+			
+			col:nth-child(n + 5) {
+				display: none;
+			}
+
+		}
+
+		// Hide the distance, times and duration
+		th:nth-child(n+5), td:nth-child(n+5) {
+			visibility: collapse;
+		}
+
+		thead {
+			display: table-header-group;
+		}
+
+		tbody {
+
+			float: none;
+
+			tr {
+
+				display: table-row;
+
+				td {
+					display: table-cell;
+				}
+
+			}
+
+		}
+
+		tfoot {
+			display: table-footer-group;
+		}
+
+	}
+
 }
 
 @media (min-width: 1024px) {

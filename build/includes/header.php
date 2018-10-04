@@ -31,6 +31,7 @@
 
 </nav>
 
+<!-- Main content -->
 <div id="site-wrapper" <?php
 		
 	// Enable landing page animations

@@ -1,4 +1,46 @@
 @import url(animate.css);
+@font-face {
+  font-family: "Branding";
+  src: url("../fonts/branding/branding-semilightitalic.eot");
+  src: url("../fonts/branding/branding-semilightitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-semilightitalic.woff") format("woff"), url("../fonts/branding/branding-semilightitalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Branding";
+  src: url("../fonts/branding/branding-medium.eot");
+  src: url("../fonts/branding/branding-medium.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-medium.woff") format("woff"), url("../fonts/branding/branding-medium.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Branding";
+  src: url("../fonts/branding/branding-mediumitalic.eot");
+  src: url("../fonts/branding/branding-mediumitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-mediumitalic.woff") format("woff"), url("../fonts/branding/branding-mediumitalic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic; }
+
+@font-face {
+  font-family: "Branding";
+  src: url("../fonts/branding/branding-semibold.eot");
+  src: url("../fonts/branding/branding-semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-semibold.woff") format("woff"), url("../fonts/branding/branding-semibold.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Branding";
+  src: url("../fonts/branding/branding-bold.eot");
+  src: url("../fonts/branding/branding-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-bold.woff") format("woff"), url("../fonts/branding/branding-bold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Branding";
+  src: url("../fonts/branding/branding-bolditalic.eot");
+  src: url("../fonts/branding/branding-bolditalic.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-bolditalic.woff") format("woff"), url("../fonts/branding/branding-bolditalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic; }
+
 /*!
 	Modaal - accessible modals - v0.3.1
 	by Humaan, for all humans.
@@ -662,6 +704,168 @@
   -o-transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
   transform: translate(84px, 84px) rotate(360deg) translate(70px, 0); }
 
+html {
+  background: #ff7755; }
+
+*, ::after, ::before {
+  box-sizing: border-box; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted; }
+
+a:visited {
+  color: inherit; }
+
+a:hover {
+  border-bottom-style: solid; }
+
+.current {
+  font-weight: 500; }
+
+body {
+  margin: 0;
+  font-family: "Branding", sans-serif; }
+
+.hidden {
+  display: none; }
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table; }
+
+#site-wrapper {
+  position: relative;
+  min-height: 100vh;
+  background-color: #ff7755;
+  left: 0;
+  transition: left 0.7s ease-out; }
+  #site-wrapper.active {
+    left: calc(-100% + 20px); }
+
+#site-wrapper.modal-open {
+  -webkit-filter: saturate(0) blur(10px);
+  -moz-filter: saturate(0) blur(10px);
+  -o-filter: saturate(0) blur(10px);
+  -ms-filter: saturate(0) blur(10px);
+  filter: saturate(0) blur(10px);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='10'); }
+
+.container {
+  margin: 0 auto;
+  width: calc(100% - 1em); }
+
+h2 {
+  color: white;
+  font-family: "Branding", sans-serif;
+  font-weight: normal;
+  font-size: 4em;
+  text-align: center;
+  line-height: 1;
+  margin: 0; }
+
+h3 {
+  color: white;
+  font-family: "Branding", sans-serif;
+  font-weight: normal;
+  font-size: 1.7em;
+  text-align: center;
+  margin: 0; }
+
+.centre-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  /*-webkit-align-items: center;
+	align-items: center;*/
+  justify-content: center;
+  flex-direction: column;
+  /* Height of the window - the header */
+  min-height: calc(100vh - 5em);
+  max-width: 100vw;
+  overflow: hidden; }
+
+.horizontal-centre {
+  margin: 0 auto; }
+
+.modal-link {
+  font-family: "Branding", sans-serif;
+  font-weight: normal;
+  color: white;
+  cursor: pointer; }
+
+#leaderboard {
+  width: 100%;
+  grid-area: leaderboard; }
+
+main {
+  padding-bottom: 2em; }
+
+main p {
+  font-family: "Branding", sans-serif;
+  font-variant-numeric: tabular-nums; }
+
+.emphasis {
+  font-style: italic; }
+
+.error-message {
+  color: white;
+  font-weight: regular;
+  font-size: 2em;
+  text-align: center; }
+
+/* Tables 
+=====================================*/
+table {
+  border: none;
+  border-spacing: 0;
+  width: 100%; }
+  table thead th {
+    border: none;
+    font-weight: 500; }
+    table thead th:hover {
+      color: rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+      font-weight: bold; }
+  table thead td {
+    padding-right: 2em;
+    border: none;
+    text-overflow: ellipsis;
+    overflow: hidden; }
+  table tbody, table tfoot {
+    font-variant-numeric: tabular-nums;
+    font-weight: normal;
+    text-align: center; }
+    table tbody tr:nth-child(even) td, table tfoot tr:nth-child(even) td {
+      background-color: rgba(255, 255, 255, 0.1); }
+    table tbody td, table tfoot td {
+      border: none;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 0.5em; }
+
+.selected {
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: 500; }
+
+#leaderboard .col1, #leaderboard .col3 {
+  width: 6em; }
+
+#leaderboard thead tr th {
+  background: initial; }
+
+#leaderboard thead tr th:hover {
+  color: initial;
+  cursor: default;
+  font-weight: 500; }
+
 h1 {
   animation-delay: 1s;
   animation-duration: 1.5s; }
@@ -669,48 +873,6 @@ h1 {
 header nav, .burger-button, h2, h3 {
   animation-delay: 2.5s;
   animation-duration: 2s; }
-
-@font-face {
-  font-family: "Branding";
-  src: url("../fonts/branding/branding-semilightitalic.eot");
-  src: url("../fonts/branding/branding-semilightitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-semilightitalic.woff") format("woff"), url("../fonts/branding/branding-semilightitalic.ttf") format("truetype");
-  font-weight: 300;
-  font-style: italic; }
-
-@font-face {
-  font-family: "Branding";
-  src: url("../fonts/branding/branding-medium.eot");
-  src: url("../fonts/branding/branding-medium.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-medium.woff") format("woff"), url("../fonts/branding/branding-medium.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: "Branding";
-  src: url("../fonts/branding/branding-mediumitalic.eot");
-  src: url("../fonts/branding/branding-mediumitalic.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-mediumitalic.woff") format("woff"), url("../fonts/branding/branding-mediumitalic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic; }
-
-@font-face {
-  font-family: "Branding";
-  src: url("../fonts/branding/branding-semibold.eot");
-  src: url("../fonts/branding/branding-semibold.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-semibold.woff") format("woff"), url("../fonts/branding/branding-semibold.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal; }
-
-@font-face {
-  font-family: "Branding";
-  src: url("../fonts/branding/branding-bold.eot");
-  src: url("../fonts/branding/branding-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-bold.woff") format("woff"), url("../fonts/branding/branding-bold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal; }
-
-@font-face {
-  font-family: "Branding";
-  src: url("../fonts/branding/branding-bolditalic.eot");
-  src: url("../fonts/branding/branding-bolditalic.eot?#iefix") format("embedded-opentype"), url("../fonts/branding/branding-bolditalic.woff") format("woff"), url("../fonts/branding/branding-bolditalic.ttf") format("truetype");
-  font-weight: 600;
-  font-style: italic; }
 
 /* Main header 
 =====================================*/
@@ -990,6 +1152,51 @@ form button {
   height: 500px;
   width: 500px; }
 
+#name {
+  font-size: 2em; }
+
+#activity {
+  border-collapse: separate;
+  border-spacing: 0 1em; }
+  #activity thead {
+    display: none; }
+  #activity tbody tr td {
+    display: list-item;
+    position: relative;
+    border: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    background: none; }
+    #activity tbody tr td:first-child {
+      border-top: 0.2em solid black; }
+    #activity tbody tr td:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.1); }
+    #activity tbody tr td::before {
+      position: absolute;
+      left: 0; }
+    #activity tbody tr td:nth-child(1)::before {
+      content: "Session ID"; }
+    #activity tbody tr td:nth-child(2)::before {
+      content: "User Session"; }
+    #activity tbody tr td:nth-child(3)::before {
+      content: "Activity"; }
+    #activity tbody tr td:nth-child(4)::before {
+      content: "Date"; }
+    #activity tbody tr td:nth-child(5)::before {
+      content: "Duration"; }
+    #activity tbody tr td:nth-child(6)::before {
+      content: "Start Time"; }
+    #activity tbody tr td:nth-child(7)::before {
+      content: "Finish Time"; }
+    #activity tbody tr td:nth-child(8)::before {
+      content: "Duration"; }
+  #activity tfoot {
+    display: none; }
+
+#map {
+  z-index: 0; }
+
 footer {
   width: 100%;
   background: #454E69;
@@ -1031,166 +1238,24 @@ footer ul li {
     width: 100%;
     padding: 0px calc(50% - 384px); }
   .modal-dialog {
-    min-width: calc(100% - 50px); } }
+    min-width: calc(100% - 50px); }
+  #activity colgroup {
+    display: table-column-group; }
+    #activity colgroup col:nth-child(n + 5) {
+      display: none; }
+  #activity th:nth-child(n+5), #activity td:nth-child(n+5) {
+    visibility: collapse; }
+  #activity thead {
+    display: table-header-group; }
+  #activity tbody {
+    float: none; }
+    #activity tbody tr {
+      display: table-row; }
+      #activity tbody tr td {
+        display: table-cell; }
+  #activity tfoot {
+    display: table-footer-group; } }
 
 @media (min-width: 1024px) {
   .container, .centre-container {
     padding: 0px calc(50% - 500px); } }
-
-html {
-  background: #ff7755; }
-
-*, ::after, ::before {
-  box-sizing: border-box; }
-
-a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px dotted; }
-
-a:visited {
-  color: inherit; }
-
-a:hover {
-  border-bottom-style: solid; }
-
-.current {
-  font-weight: 500; }
-
-body {
-  margin: 0;
-  font-family: "Branding", sans-serif; }
-
-.hidden {
-  display: none; }
-
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table; }
-
-#site-wrapper {
-  position: relative;
-  min-height: 100vh;
-  background-color: #ff7755;
-  left: 0;
-  transition: left 0.7s ease-out; }
-  #site-wrapper.active {
-    left: calc(-100% + 20px); }
-
-#site-wrapper.modal-open {
-  -webkit-filter: saturate(0) blur(10px);
-  -moz-filter: saturate(0) blur(10px);
-  -o-filter: saturate(0) blur(10px);
-  -ms-filter: saturate(0) blur(10px);
-  filter: saturate(0) blur(10px);
-  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='10'); }
-
-.container {
-  margin: 0 auto;
-  width: calc(100% - 1em); }
-
-h2 {
-  color: white;
-  font-family: "Branding", sans-serif;
-  font-weight: normal;
-  font-size: 4em;
-  text-align: center;
-  line-height: 1;
-  margin: 0; }
-
-h3 {
-  color: white;
-  font-family: "Branding", sans-serif;
-  font-weight: normal;
-  font-size: 1.7em;
-  text-align: center;
-  margin: 0; }
-
-.centre-container {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
-  /*-webkit-align-items: center;
-	align-items: center;*/
-  justify-content: center;
-  flex-direction: column;
-  /* Height of the window - the header */
-  min-height: calc(100vh - 5em);
-  width: 100%; }
-
-.horizontal-centre {
-  margin: 0 auto; }
-
-.modal-link {
-  font-family: "Branding", sans-serif;
-  font-weight: normal;
-  color: white;
-  cursor: pointer; }
-
-#leaderboard {
-  width: 100%;
-  grid-area: leaderboard; }
-
-main {
-  padding-bottom: 2em; }
-
-main p {
-  font-family: "Branding", sans-serif;
-  font-variant-numeric: tabular-nums; }
-
-.emphasis {
-  font-style: italic; }
-
-.error-message {
-  color: white;
-  font-weight: regular;
-  font-size: 2em;
-  text-align: center; }
-
-/* Tables 
-=====================================*/
-table {
-  border: none;
-  border-spacing: 0;
-  font-size: 0.7em;
-  width: 100%; }
-  table thead th {
-    border: none;
-    font-weight: 500; }
-    table thead th:hover {
-      color: rgba(0, 0, 0, 0.6);
-      cursor: pointer;
-      font-weight: bold; }
-  table thead td {
-    padding-right: 2em; }
-  table td {
-    border: none;
-    text-overflow: ellipsis;
-    overflow: hidden; }
-  table tbody, table tfoot {
-    font-variant-numeric: tabular-nums;
-    font-weight: normal;
-    text-align: center; }
-    table tbody tr:nth-child(even) td, table tfoot tr:nth-child(even) td {
-      background-color: rgba(255, 255, 255, 0.1); }
-
-.selected {
-  background-color: rgba(255, 255, 255, 0.1);
-  font-weight: 500; }
-
-#leaderboard .col1, #leaderboard .col3 {
-  width: 6em; }
-
-#leaderboard thead tr th {
-  background: initial; }
-
-#leaderboard thead tr th:hover {
-  color: initial;
-  cursor: default;
-  font-weight: 500; }

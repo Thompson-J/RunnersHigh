@@ -1,6 +1,7 @@
 var tomtom;
-var geolocation = document.getElementById('waypoints').innerText;
-geolocation = JSON.parse(geolocation);
+
+var geolocation = document.getElementById('geolocation').textContent
+geolocation = JSON.parse(geolocation)
 
 $(function() {
 

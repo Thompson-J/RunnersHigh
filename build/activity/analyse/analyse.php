@@ -30,7 +30,7 @@ if($activity_array['result'] === false) {
 
 	$sessionid = $activity_array['data']['session_id'];
 	$activity = $activity_array['data']['activity'];
-	$waypoints = json_encode($activity_array['data']['waypoints']);
+	$waypoints = json_encode( $activity_array['data']['waypoints'] );
 	$distance = $activity_array['data']['distance'];
 	$date = $activity_array['data']['date'];
 	$start_time = $activity_array['data']['start_time'];
@@ -55,7 +55,6 @@ if($activity_array['result'] === false) {
 
 				<p id="sessionid">Session ID: <?php echo $sessionid; ?></p>
 				<p>Activity: <?php echo $activity; ?></p>
-				<p>Geolocation: <span id="waypoints"><?php echo( $waypoints ); ?></span></p>
 				<p>Distance: <?php echo $distance; ?></p>
 				<p>Date: <?php echo $date; ?></p>
 				<p>Start time: <?php echo $start_time; ?></p>
@@ -70,7 +69,9 @@ if($activity_array['result'] === false) {
 
 <?php
 
-$addscripts = "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js'></script>
+// Inline geolocation JSON credit: https://quipblog.com/efficiently-loading-inlined-json-data-911960b0ac0a
+$addscripts = "<script type='application/json' id='geolocation'>" . $waypoints . "</script>
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js'></script>
 <link rel='stylesheet' type='text/css' href='" . HOMEURL . "tomtom/map.css'/>
 <script src='" . HOMEURL . "tomtom/tomtom.min.js'></script>
 <script type='text/javascript' src='" . HOMEURL . "js/analyse.js'></script>";

@@ -189,7 +189,7 @@ function retrieveActivity() {
 				// If registration is successful
 				if (this.status == 200) {
 
-					//console.log(http);
+					console.log(http);
 
 					// Remove any login form errors
 					$("#bad-email").removeClass("input-error");
@@ -209,10 +209,15 @@ function retrieveActivity() {
 				} else {
 
 					var error = http.response
-					//console.log(error);
+					console.log(error);
 
 					switch(error.result) {
 						
+						// If the email address is invalid
+						case "The email address you entered is not valid. ":
+							$("#bad-email").addClass("input-error");
+							break;
+
 						// If the email address is unrecognised
 						case "A user with this email already exists. ":
 							$("#bad-email").addClass("input-error");
@@ -220,6 +225,13 @@ function retrieveActivity() {
 
 						// If the password is unrecognised
 						case "Invalid password configuration. ":
+							$("#bad-email").removeClass("input-error");
+							$("#bad-password").addClass("input-error");
+							break;
+
+						// If the password is unrecognised
+						case "bad-password":
+							$("#bad-email").removeClass("input-error");
 							$("#bad-password").addClass("input-error");
 							break;
 							
@@ -254,10 +266,7 @@ function activity(response) {
 			// This row will change with each successive loop
 			var row = activity[i];
 
-			// The typeface Branding doesn't support fractions, so I've made a hacky fix.
-			// With Regular Expressions, jQuery is picking out the numerator,
-			// slash and denominator from the string and then using CSS to format each like such.
-			var distance = row.distance.replace(/\d(?=\/)/,"<span class='numerator'>$&</span>").replace(/\/(?=<)/,"<span class='slash'>/</span>").replace(/(\d*?)(?=\smile)/,"<span class='denominator'>$&</span>");
+			var distance = row.distance;
 
 			// Format the date
 			var d = new Date(row.date);
@@ -481,18 +490,21 @@ submit_activity = {
 
 		// Read the response
 		http.onreadystatechange = function() {
+			
 			//console.log(this);
 			if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 				location.reload();
 			} else if (this.status == 400) {
 				alert("There's something wrong with the data provided");
 			}
+
 		}
 
 	}
 }
 
 function getActivityById(id) {
+
 	// Create an AJAX object
 	let http = new XMLHttpRequest();
 	http.open('POST', window.location.origin + '/includes/activityById.php', true);
@@ -510,4 +522,5 @@ function getActivityById(id) {
 			alert("There's something wrong with the data provided");
 		}
 	}
+
 }

@@ -47,7 +47,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 						echo '<p>Currently logged in as ' . htmlentities($_SESSION['name']) . '.</p>';
 
-						echo "<p>Do you want to change user? <a href=" . HOMEURL . "/includes/logout.php'>Log out</a>.</p>";
+						echo "<p>Do you want to change user? <a href='" . HOMEURL . "/includes/logout.php'>Log out</a>.</p>";
 
 					} else {
 						echo "<p>Currently logged out.</p><a class='modaal-ajax' href='" . HOMEURL . "/login.php'>Login</a><p>If you don&apos;t have a login, please <a href='" . HOMEURL . "register.php' class='modaal-ajax'>register</a></p>";
