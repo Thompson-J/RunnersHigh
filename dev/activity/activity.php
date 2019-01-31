@@ -58,27 +58,31 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 						<?php
 
-						$i = 1;
-						// Each run session
-						foreach($activity as $row) {
+						if (!empty($activity)) {
 
-							echo "<tr>";
-							// Information about this run ?>
-							<td><?php echo "<a href='analyse/?s=" . $row['run_id'] . "'>" . $row['run_id'] . "</a>" ?></td>
-							<td><?php echo $i ?></td>
-							<td><?php echo $row['activity'] ?></td>
-							<td><?php $date = date("D jS M Y", strtotime($row['date']));
-							$date = preg_replace("/(\d+)([a-z]+)/", "$1<sup>$2</sup>", $date);
-							echo $date; ?></td>
-							<td><?php $distance = preg_replace("/(\d)(\/)(\d)/", "<sup>$1</sup>&frasl;<sub>$3</sub>", $row['distance']);
-							echo $distance; ?></td>
-							<td><?php echo $row['start_time'] ?></td>
-							<td><?php echo $row['finish_time'] ?></td>
-							<td><?php echo $row['duration'] ?></td>
+							$i = 1;
+							// Each run session
+							foreach($activity as $row) {
 
-							<?php echo "</tr>";
+								echo "<tr>";
+								// Information about this run ?>
+								<td><?php echo "<a href='analyse/?s=" . $row['run_id'] . "'>" . $row['run_id'] . "</a>" ?></td>
+								<td><?php echo $i ?></td>
+								<td><?php echo $row['activity'] ?></td>
+								<td><?php $date = date("D jS M Y", strtotime($row['date']));
+								$date = preg_replace("/(\d+)([a-z]+)/", "$1<sup>$2</sup>", $date);
+								echo $date; ?></td>
+								<td><?php $distance = preg_replace("/(\d)(\/)(\d)/", "<sup>$1</sup>&frasl;<sub>$3</sub>", $row['distance']);
+								echo $distance; ?></td>
+								<td><?php echo $row['start_time'] ?></td>
+								<td><?php echo $row['finish_time'] ?></td>
+								<td><?php echo $row['duration'] ?></td>
 
-							$i++;
+								<?php echo "</tr>";
+
+								$i++;
+							}
+
 						}
 
 						?>
