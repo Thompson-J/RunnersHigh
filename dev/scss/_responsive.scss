@@ -41,6 +41,8 @@
 
 	#activity {
 
+		border-spacing: 0 0.2em;
+
 		colgroup {
 
 			display: table-column-group;
@@ -53,7 +55,31 @@
 
 		// Hide the distance, times and duration
 		th:nth-child(n+5), td:nth-child(n+5) {
-			visibility: collapse;
+			//visibility: collapse;
+		}
+
+		tbody {
+
+			tr {
+
+				td:first-child {
+					border-top: none;
+				}
+
+				td:nth-child(even) {
+					background: none;
+				}
+
+				td::before {
+					display: none;
+				}
+
+			}
+
+			tr:nth-child(odd) {
+				background-color: rgba(255, 255, 255, 0.1);
+			}
+
 		}
 
 		thead {

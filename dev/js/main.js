@@ -1,7 +1,161 @@
+// Global scope
+var register_form_data;
+
+// When the submit button is clicked
+function registerSubmit() {
+
+	let register_form = document.getElementById('register_form');
+
+	// Name
+	register_form_data.fullname = register_form.register_fullname.value;
+	// Email
+	register_form_data.email = register_form.register_email.value;
+	// Password
+	register_form_data.password = register_form.register_password.value;
+
+	// Test if the passwords have been correctly filled
+	register_form_data.submit();
+
+}
+
+// Object oriented
+// Create a JavaScript object representing the registration data
+register_form_data = {
+
+	set fullname(value) {
+		// If the name is 3 characters or greater and less than 20 then accept it
+		if (value.length >= 3 && value.length < 20) {
+			// Replace spaces with underscores
+			//value = value.replace(' ', '_');
+			this._fullname = value;
+
+			// Remove the error class
+			document.getElementById('register_bad_name').classList.remove('input-error')
+		} else {
+			// Add the error class
+			document.getElementById('register_bad_name').classList.add('input-error')
+		}
+	},
+	get fullname() {
+		// Get the name
+		return this._fullname
+	},
+	set email(value) {
+
+		// Regular expression credit: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+		var email_regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+		// If the email is valid then accept it
+		if ( email_regex.test(value) && value.length <= 60 ) {
+			this._email = value
+			// Remove the error class
+			document.getElementById('register_bad_email').classList.remove('input-error')
+		} else {
+			// Add the error class
+			document.getElementById('register_bad_email').classList.add('input-error')
+		}
+	},
+	get email() {
+		// Get the email
+		return this._email
+	},
+	set password(value) {
+
+		// Check if the password match and satisfy security critera
+		let password_cnfrm = register_form.register_password_cnfrm.value;
+		const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]*$/;
+
+		if( value.length >= 8 && password_regex.test(value) ) {
+		
+			// This is a valid password
+			document.getElementById('register_bad_password').classList.remove('input-error')
+
+			if( value === password_cnfrm ) {
+
+				// Set the passwords because they match and satisfy security critera
+				this._password = hex_sha512(value)
+
+				// Remove the error class
+				document.getElementById('register_bad_password_cnfrm').classList.remove('input-error')
+
+			} else {
+				// Add the error class
+				document.getElementById('register_bad_password_cnfrm').classList.add('input-error')
+			}
+
+		} else {
+			// Add the error class
+			document.getElementById('register_bad_password').classList.add('input-error')
+		}
+
+	},
+	get password() {
+		// Get the name
+		return this._password
+	},
+	submit : function submit() {
+
+		if( this.fullname !== (null || undefined) && this.email !== (null || undefined) && this.password !== (null || undefined) ) {
+
+			// Create a variable in JSON format with the fullname, email and password properties
+			var json = JSON.stringify(this, ['fullname', 'email', 'password']);
+			//console.log(json)
+
+			// Create an AJAX object
+			let http = new XMLHttpRequest();
+			http.open('POST', homeurl + 'includes/process_registration.php', true);
+			http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+			http.responseType = 'json';
+			// Send the registation data
+			http.send(json)
+
+			// Read the response
+			http.onreadystatechange = function() {
+				// When the operation is complete
+				if (this.readyState == 4) {
+
+					// If registration is successful
+					if (this.status == 200) {
+					
+						console.log(http)
+						$('.modaal').modaal('close');
+						window.location.reload();
+					
+					} else {
+					
+						var error = (http.response)
+						switch(error.result) {
+
+							// If the email address is unrecognised
+							case "A user with this email already exists. ":
+								$("#register_bad_email").addClass("input-error");
+								break;
+
+							// If the password is unrecognised
+							case "Invalid password configuration. ":
+								$("#register_bad_password").addClass("input-error");
+								break;
+								
+						};
+					
+					}
+				}
+			}
+		
+		}
+
+	}
+}
+
 var homeurl = window.location.origin + "/";
+var cookieUsed = false;
+var updateActivity;
+
+// Development environment redirect
+if(window.location.hostname == "localhost" && window.location.port !== "3000") window.location.port = "3000";
 
 // Modaal
-$('.inline').modaal({
+$('.modaal').modaal({
 	before_open: function() {
 		// Close the nav sidebar by removing the active class
 		$('#site-wrapper, .sidenav, .burger-button, .burger-button div').removeClass('active');
@@ -11,25 +165,43 @@ $('.inline').modaal({
 		$('#site-wrapper').removeClass('modal-open');
 	}
 });
-$('.modaal-ajax').modaal({
-    type: 'ajax'
-});
-
-var cookieUsed = false;
-var updateActivity;
 
 function loginCheck() {
 
+	let http = new XMLHttpRequest();
 	//console.log('attempting auto login')
 
-	$.ajax({
+	http.open('POST', homeurl + "includes/process_login.php", true);
+	http.responseType = 'json';
+	//console.log(http)
+	// Send the registation data
+
+	// Read the response
+	http.onreadystatechange = function() {
+		// When the operation is complete and we are logged in
+		if (this.readyState == 4 && this.status == 200) {
+			console.log('hello');
+		}
+	}
+	http.onerror = function() {
+		console.log('error')
+	}
+
+
+	http.send()
+
+	return(http)
+
+
+
+	/*$.ajax({
 		url: homeurl + "includes/process_login.php",
 		method: "POST",
 		dataType: "json",
 		success: function(response) {
 
 			//console.log("logged in");
-			activity(response);
+			//activity(response);
 			return true;
 
 		},
@@ -40,7 +212,7 @@ function loginCheck() {
 			return false;
 
 		}
-	});
+	});*/
 
 }
 
@@ -157,8 +329,8 @@ $(document).ready(function() {
 function retrieveActivity() {
 
 	//window.alert("hello world");
-	var email = document.getElementById("email").value;
-	var password = document.getElementById("password").value;
+	var email = document.getElementById("login_email").value;
+	var password = document.getElementById("login_password").value;
 	//console.log(password);
 
 	// Check the user typed an email address
@@ -215,24 +387,24 @@ function retrieveActivity() {
 						
 						// If the email address is invalid
 						case "The email address you entered is not valid. ":
-							$("#bad-email").addClass("input-error");
+							$("#login_bad_email").addClass("input-error");
 							break;
 
 						// If the email address is unrecognised
 						case "A user with this email already exists. ":
-							$("#bad-email").addClass("input-error");
+							$("#login_bad_email").addClass("input-error");
 							break;
 
 						// If the password is unrecognised
 						case "Invalid password configuration. ":
-							$("#bad-email").removeClass("input-error");
-							$("#bad-password").addClass("input-error");
+							$("#login_bad_email").removeClass("input-error");
+							$("#login_bad_password").addClass("input-error");
 							break;
 
 						// If the password is unrecognised
 						case "bad-password":
-							$("#bad-email").removeClass("input-error");
-							$("#bad-password").addClass("input-error");
+							$("#login_bad_email").removeClass("input-error");
+							$("#login_bad_password").addClass("input-error");
 							break;
 							
 					};
@@ -246,10 +418,6 @@ function retrieveActivity() {
 }
 
 function activity(response) {
-
-	// Close other open modals and open activity
-	//$('.inline').modaal('close');
-	//$('.modal-ajax').modaal('close');
 
 	//console.log(response);
 
@@ -277,7 +445,7 @@ function activity(response) {
 			date = momentdate.replace(/(\d+)([a-z]+)/, "$1<sup>$2</sup>");
 
 			// Add the JSON to the HTML markup
-			var rowMarkup = "<tr><td><a href='analyse/?s=" + activity[i].session_id + "'>" + activity[i].session_id + "</a></td><td>" + parseInt(i+1) + "</td><td>" + row.activity + "</td><td><time datetime='" + row.date + "'>" + date + "</time></td><td>" + distance + "</td><td>" + row.start_time + "</td><td>"  + row.finish_time + "</td><td>" + row.duration + "</td></tr>";
+			var rowMarkup = "<tr><td><a href='analyse/?s=" + activity[i].run_id + "'>" + activity[i].run_id + "</a></td><td>" + parseInt(i+1) + "</td><td>" + row.activity + "</td><td><time datetime='" + row.date + "'>" + date + "</time></td><td>" + distance + "</td><td>" + row.start_time + "</td><td>"  + row.finish_time + "</td><td>" + row.duration + "</td></tr>";
 
 			// Display the JSON and HTML markup in the console
 			//console.log(rowMarkup);
@@ -291,33 +459,6 @@ function activity(response) {
 
 	// Finished updating the activity table
 	updateActivity = true;
-
-}
-
-function passwordReset() {
-
-	var email = $("#reminder-email").val();
-	if (email !== "") {
-		$.ajax({
-			url: homeurl + "password-reminder.php?email=" + email,
-			method: "GET",
-		}).done(function (response) {
-			if (response !== "null") {
-				$("#modal-reminder form").css("display", "none");
-				//console.log(response);
-				$("#password-reminder").css("display", "block");
-				$("#password-reminder").text(response);
-			} else {
-				$("#reminder-bad-email").css("display", "block");
-			}
-		});
-	}
-
-}
-
-function passwordResetModal() {
-
-	
 
 }
 
@@ -362,26 +503,6 @@ function leaderboard() {
 	});
 
 }
-
-// Global scope
-var form, submit, form_data;
-
-form = document.getElementById('register-form')
-
-// When the submit button is clicked
-$('#register-form #submit').click( function() {
-
-	// Name
-	form_data.fullname = form.fullname.value;
-	// Email
-	form_data.email = form.email.value;
-	// Password
-	form_data.password = form.password.value;
-
-	// Test if the passwords have been correctly filled
-	form_data.submit();
-
-})
 
 // Manually add new activity
 $('#manual_submit').click( function () {
@@ -524,3 +645,16 @@ function getActivityById(id) {
 	}
 
 }
+
+// When the page has loaded
+$(function() {
+	// Submit forms with the ENTER key
+	$('input').keydown(function(e) {
+
+		if (e.keyCode == 13) {
+			$(this).parent().children('button').click();
+		}
+
+	});
+
+});

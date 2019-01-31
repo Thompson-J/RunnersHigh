@@ -15,6 +15,5 @@
 	<script type="text/javascript" src="<?php echo HOMEURL; ?>js/modaal.js"></script>
 	<script type="text/javascript" src="<?php echo HOMEURL; ?>js/sha512.js"></script>
 	<script type="text/javascript" src="<?php echo HOMEURL; ?>js/main.js"></script>
-	<script type="text/javascript">loginCheck();</script>
 
 </html>

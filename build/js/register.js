@@ -15,7 +15,7 @@ $(function() {
 var form, submit, form_data;
 
 form = document.getElementById('register-form')
-submit = document.getElementById('submit')
+submit = document.getElementById('register-submit')
 
 // When the submit button is clicked
 submit.addEventListener('click', function() {
@@ -76,7 +76,7 @@ form_data = {
 	set password(value) {
 
 		// Check if the password match and satisfy security critera
-		let password_confirmation = form.password_confirmation.value;
+		let password_confirmation = form.'password-cnfrm'.value;
 		const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]*$/;
 
 		// Store a variable to use in the valid password test

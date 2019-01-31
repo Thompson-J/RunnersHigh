@@ -15,8 +15,8 @@
 				
 				} else {
 				
-					echo '<li><a href="' . HOMEURL . 'register.php" class="modaal-ajax">Register</a></li>
-					<li><a class="modaal-ajax" href="' . HOMEURL . 'login.php">Login</a></li>';
+					echo '<li><a href="#register" data-modaal-type="inline" class="modaal">Register</a></li>
+			<li><a data-modaal-type="inline" class="modaal" href="#login">Login</a></li>';
 				
 				}
 			?>

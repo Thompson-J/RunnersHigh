@@ -208,7 +208,7 @@ function esc_url($url) {
 
 function activity($user_id, $mysqli) {
 
-	if ($stmt = $mysqli->prepare("SELECT session_id, activity, distance, `date`, start_time, finish_time, duration
+	if ($stmt = $mysqli->prepare("SELECT run_id, activity, distance, `date`, start_time, finish_time, duration
 															FROM user_sessions
 															WHERE user_id = ?
 															")) {
@@ -328,7 +328,7 @@ function analyse($userid, $session, $mysqli) {
 	$stmt = $mysqli->prepare("SELECT activity, waypoints, distance, `date`, start_time, finish_time, duration
 														FROM user_sessions
 														WHERE user_id = $userid
-														ORDER BY session_id");
+														ORDER BY run_id");
 
 	$stmt->execute();
 
@@ -349,17 +349,17 @@ function analyse($userid, $session, $mysqli) {
 
 }
 
-function activityById($user_id, $session_id, $mysqli) {
+function activityById($user_id, $run_id, $mysqli) {
 
 	$session = [];
 
 	// Select the run
 	$stmt = $mysqli->prepare("SELECT *
 														FROM user_sessions
-														WHERE user_id = ? AND session_id = ?
+														WHERE user_id = ? AND run_id = ?
 														LIMIT 1");
 
-	$stmt->bind_param('ii', $user_id, $session_id);
+	$stmt->bind_param('ii', $user_id, $run_id);
 	$stmt->execute();   // Execute the prepared query.
 	
 	$result = $stmt->get_result();

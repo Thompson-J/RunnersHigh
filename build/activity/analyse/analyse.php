@@ -28,11 +28,12 @@ if($activity_array['result'] === false) {
 
 } else {
 
-	$sessionid = $activity_array['data']['session_id'];
+	$sessionid = $activity_array['data']['run_id'];
 	$activity = $activity_array['data']['activity'];
 	$waypoints = json_encode( $activity_array['data']['waypoints'] );
-	$distance = $activity_array['data']['distance'];
-	$date = $activity_array['data']['date'];
+	$distance = preg_replace("/(\d)(\/)(\d)/", "<sup>$1</sup>&frasl;<sub>$3</sub>", $activity_array['data']['distance']);
+	$date = date("D jS M Y", strtotime($activity_array['data']['date']));
+	$date = preg_replace("/(\d+)([a-z]+)/", "$1<sup>$2</sup>", $date);
 	$start_time = $activity_array['data']['start_time'];
 	$finish_time = $activity_array['data']['finish_time'];
 	$duration = $activity_array['data']['duration'];
@@ -53,7 +54,7 @@ if($activity_array['result'] === false) {
 
 				<div id='map'></div> 
 
-				<p id="sessionid">Session ID: <?php echo $sessionid; ?></p>
+				<p id="sessionid">Run ID: <?php echo $sessionid; ?></p>
 				<p>Activity: <?php echo $activity; ?></p>
 				<p>Distance: <?php echo $distance; ?></p>
 				<p>Date: <?php echo $date; ?></p>

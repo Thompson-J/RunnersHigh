@@ -7,6 +7,9 @@ $firstname = $firstname[0];
 
 $title = $firstname . TITLE_DELIMITER . TITLE;
 
+// Get the user's activity
+$activity = activity($_SESSION['user_id'], $mysqli);
+
 include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 ?>
@@ -39,8 +42,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 					<thead>
 						<tr>
 
-							<th>Session ID</th>
-							<th>User Session</th>
+							<th>Run ID</th>
+							<th>Your session</th>
 							<th>Activity</th>
 							<th>Date</th>
 							<th>Distance</th>
@@ -52,7 +55,33 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 					</thead>
 
 					<tbody>
-						
+
+						<?php
+
+						$i = 1;
+						// Each run session
+						foreach($activity as $row) {
+
+							echo "<tr>";
+							// Information about this run ?>
+							<td><?php echo "<a href='analyse/?s=" . $row['run_id'] . "'>" . $row['run_id'] . "</a>" ?></td>
+							<td><?php echo $i ?></td>
+							<td><?php echo $row['activity'] ?></td>
+							<td><?php $date = date("D jS M Y", strtotime($row['date']));
+							$date = preg_replace("/(\d+)([a-z]+)/", "$1<sup>$2</sup>", $date);
+							echo $date; ?></td>
+							<td><?php $distance = preg_replace("/(\d)(\/)(\d)/", "<sup>$1</sup>&frasl;<sub>$3</sub>", $row['distance']);
+							echo $distance; ?></td>
+							<td><?php echo $row['start_time'] ?></td>
+							<td><?php echo $row['finish_time'] ?></td>
+							<td><?php echo $row['duration'] ?></td>
+
+							<?php echo "</tr>";
+
+							$i++;
+						}
+
+						?>
 
 					</tbody>
 

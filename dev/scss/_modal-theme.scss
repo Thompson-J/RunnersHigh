@@ -32,7 +32,7 @@ form {
   }
 }
 
-#login-form, #register-form {
+#login_form, #register_form {
 
   input {
     display: block;
@@ -110,21 +110,21 @@ form {
 
 }
 
-#login-form {
+#login_form {
 
-  #bad-email {
+  #login_bad_email {
     &::before {
       content: "Incorrect email";
     }
   }
 
-  #bad-password {
+  #login_bad_password {
     &::before {
       content: "Incorrect password";
     }
   }
 
-  .remember-user {
+  .login_remember_user {
 
     &::selection {
       background: none;
@@ -138,7 +138,7 @@ form {
 
   }
 
-  #reset-link {
+  #login_reset_link {
     color: $blue;
     font-family: 'Branding', sans-serif;
     font-style: italic;
@@ -147,29 +147,29 @@ form {
 
 }
 
-#register-form {
+#register_form {
 
-  #bad-email {
+  #register_bad_email {
     &::before {
       content: "Invalid format or email already used";
     }
   }
 
-  #bad-name {
+  #register_bad_name {
     &::before {
       content: "Must be between 3 and 20 characters.";
     }
   }
 
-  #bad-password {
+  #register_bad_password {
     &::before {
       content: "Must contain 1 lowercase letter, 1 uppercase letter, a number and be at least 8 characters.";
     }
   }
 
-  #bad-password-confirmation {
+  #register_bad_password_cnfrm {
     &::before {
-      content: "Passwords don't match.";
+      content: "Passwords don\'t match.";
     }
   }
 

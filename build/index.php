@@ -29,7 +29,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 				if ($login_check['result'] === true) {
 				echo '<h3><a href="' . HOMEURL . 'activity/">Activity</a></h3>';
 				} else {
-				echo '<h3 class="animated fadeIn"><a href="' . HOMEURL . 'register.php" class="modaal-ajax">Register</a> &sol; <a class="modaal-ajax" href="' . HOMEURL . 'login.php">Login</a></h3>';
+				echo '<h3 class="animated fadeIn"><a href="#register" data-modaal-type="inline" class="modaal">Register</a> &sol; <a data-modaal-type="inline" class="modaal" href="#login">Login</a></h3>';
 				}
 				?>
 
@@ -50,7 +50,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 						echo "<p>Do you want to change user? <a href='" . HOMEURL . "/includes/logout.php'>Log out</a>.</p>";
 
 					} else {
-						echo "<p>Currently logged out.</p><a class='modaal-ajax' href='" . HOMEURL . "/login.php'>Login</a><p>If you don&apos;t have a login, please <a href='" . HOMEURL . "register.php' class='modaal-ajax'>register</a></p>";
+						echo "<p>Currently logged out.</p><a class='modaal' data-modaal-type='inline' href='#login'>Login</a><p>If you don&apos;t have a login, please <a href='#register' data-modaal-type='inline' class='modaal'>register</a></p>";
 					}
 
 				?>
@@ -97,4 +97,8 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 	</body>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
+<?php
+
+$addscripts = "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js'></script>";
+
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>

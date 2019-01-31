@@ -1,15 +1,13 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-header('content-type: application/json');
+//header('content-type: application/json');
 
 $error_msg = null;
 
 // Include functions one time
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
+
+sec_session_start(); // Our custom secure way of starting a PHP session.
 
 // receive the JSON Post data
 $data = (array) json_decode( file_get_contents( 'php://input' ), true );
@@ -82,8 +80,15 @@ if (empty($error_msg)) {
     if (empty($error_msg)) {
       
       // The user was registered in the database
-      $response = array('result' => 'success');
-      echo ( json_encode($response) );
+      // Attempt to login the user
+      $login = login($email, filter_var($data['password'], FILTER_SANITIZE_STRING), $mysqli);
+
+      // Login success 
+      if ($login['result'] === true) {
+
+        $response = array('result' => true);
+        echo ( json_encode($response) );
+      }
 
     } else {
 

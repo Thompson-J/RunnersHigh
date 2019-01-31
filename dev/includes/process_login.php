@@ -122,7 +122,7 @@ if ($login_check['result'] === true) {
 
 	} else {
 
-		$error_msg .= __LINE__ . 'No input provided. ';
+		$error_msg .= "Line " . __LINE__ . ': No input provided. ';
 
 		$response = array('result' => $error_msg);
 		http_response_code(400);
