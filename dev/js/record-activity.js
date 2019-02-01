@@ -9,15 +9,15 @@ $(function() {
 		// Setup TomTom Maps For Web
 		tomtom.setProductInfo('Runners High', '1');
 		// Create a map for plotting points on
-		var map = new tomtom.L.map('map', {
+		var map = new tomtom.L.map('record_map', {
 			key: 'KnsAaGwLdpHmAeEIqvGYOfQXTZxXczGx'
 		}).locate({setView: true, maxZoom: 16});
 
-		var d, date, start_time, finish_time, distance;
+		var d, date, start_time, finish_time, distance, duration;
 
 		// Stopwatch credit: https://jsfiddle.net/Daniel_Hug/pvk6p/
 		var time_display = document.getElementById('time_display'),
-		  clear = document.getElementById('clear'),
+		  clear = document.getElementById('record_clear'),
 		  seconds = 0, minutes = 0, hours = 0,
 		  t;
 
@@ -60,6 +60,7 @@ $(function() {
 
 		// Not currently recording a run
 		var recording = false;
+		var locationTimer;
 
 		// When the record button is clicked
 		$('#record_btn').click(function() {
@@ -76,7 +77,9 @@ $(function() {
 				d = new moment();
 				date = d.format('YYYY/MM/DD');
 				start_time = new moment();
-				//console.log(start_time)
+
+				// Ask for the browser for the location every 5 seconds
+				locationTimer = window.setInterval(getLocation, 5000);
 
 				// Start the timer
 				timer();
@@ -92,6 +95,7 @@ $(function() {
 				// Stop the timer
 				clearTimeout(t);
 				recording = false;
+				clearInterval(locationTimer);
 
 				// This is the end of the run so calculate the distance
 				getDistance();
@@ -114,7 +118,7 @@ $(function() {
 			// We've finished the run so ask TomTom to plot a route and calculate the distance
 			getDistance();
 
-			submit_activity.activity = document.getElementById('activity').value;
+			submit_activity.activity = document.getElementById('record_title').value;
 			submit_activity.date = date;
 			submit_activity.distance = distance + ' meters';
 			submit_activity.start_time = start_time.format('HH:mm:ss');
@@ -128,6 +132,7 @@ $(function() {
 		
 		})
 
+		// Ask the browser for the current location
 		function getLocation() {
 			
 			// Check if the browser has geolocation enabled
@@ -164,28 +169,23 @@ $(function() {
 		}
 
 		var coords;
-		var waypoint = [];
-		var waypointCount = 1;
-		var lastWaypoint;
+		var waypointCount = 0;
 		var startPoint;
 		var finishPoint;
 
+		// Callback function to run when the browser has the current location
 		// Store the realtime geolocation information and plot it on the map
 		function trackLocations(coordinates) {
 
 			// Store the position
-			geolocation.push(coordinates['coords']);
+			//console.log(coordinates);
+			geolocation.push(coordinates.coords);
+			// Add the timestamp
+			let time = new Date(coordinates.timestamp);
+			geolocation[geolocation.length-1].timestamp = time.toUTCString();
 			
-			// Keep a numbered list of all of the waypoints
-			waypoint.push('Waypoint ' + waypointCount)
-
 			// Iterate the waypoint count by 1
 			waypointCount ++;
-
-			// Store text for the last waypoint popup
-			lastWaypoint = waypoint[waypoint.length - 1]
-			console.log(lastWaypoint)
-			console.log(geolocation)
 
 			// Settings for how the marker should look
 			var markerOptions = {
@@ -198,7 +198,7 @@ $(function() {
 
 			// Plot the point on the map
 			tomtom.L.marker([geolocation[geolocation.length - 1].latitude, geolocation[geolocation.length - 1].longitude], markerOptions)
-			.bindPopup(lastWaypoint).addTo(map);
+			.bindPopup("Waypoint: " + waypointCount).addTo(map);
 		}
 
 		// Requires network access
@@ -207,31 +207,17 @@ $(function() {
 			// Create a blank string
 			var points = '';
 
-			// Loop through the waypoints
-			for( var i = 0; i < geolocation.length; i ++ ) {
-				
-				// If we've reached the end of the array
-				if ( i = geolocation.length - 1 ) {
+			// Add the first waypoint to the string	
+			points += geolocation[0].latitude + ',' + geolocation[0].longitude + ":";
+			
+			// Add the last waypoint to the string
+			points += geolocation[geolocation.length-1].latitude + ',' + geolocation[geolocation.length-1].longitude;
 
-					// Concatanate the latitude and the longitude			
-					points += geolocation[i].latitude + ',' + geolocation[i].longitude
-				
-				} else {
-				
-					// Same as before but add colons to end
-					points += geolocation[i].latitude + ',' + geolocation[i].longitude + ':'
-				
-				}
-			}
-
-			//points = points.replace(/\:$/, '');
-			console.log(points)
-
-			// locations format = 'start lat','start long':'finish lat','finish long'
+			let supportingPoints = geolocation.slice(1,-1);
 
 			// Send the geolocation to TomTom and ask for a calculated route
-			// points = '53.431320,-2.433381:53.433481,-2.429637';
-			tomtom.routing().locations(points).go()
+			// eg. points = '53.431320,-2.433381:53.433481,-2.429637';
+			tomtom.routing().locations(points).supportingPoints(supportingPoints).go()
 		  .then(function(routeGeoJson) {
 		  	// routeGeoJson is TomTom's route
 		  	var route = tomtom.L.geoJson(routeGeoJson, {
@@ -245,9 +231,6 @@ $(function() {
 		    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
 		  });
 		}
-
-		// Ask for the browser for the location every 5 seconds
-		window.setInterval(getLocation, 5000);
 
 	}
 

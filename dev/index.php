@@ -10,10 +10,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 ?>
 
-	<body>
-	
-		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
-
 			<div class="centre-container">
 
 				<h2 <?php
@@ -92,10 +88,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 				</div>				
 
 			</main>
-
-		<?php include( $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php' ); ?>
-
-	</body>
 
 <?php
 

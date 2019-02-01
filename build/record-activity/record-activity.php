@@ -6,13 +6,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 ?>
 
-	<body>
-
-		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
-
 		<main class="centre-container">
 
-			<input id="activity" type="text" name="activity" placeholder="jog, bike ride, training&hellip;">
+			<input id="record_title" type="text" name="activity" placeholder="jog, bike ride, training&hellip;">
 
 			<div id="timer">
 
@@ -26,13 +22,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 			</div>
 
-			<div id='map'></div>
+			<div class="map" id='record_map'></div>
 
 		</main>
-
-		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
-
-	</body>
 
 <?php
 

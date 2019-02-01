@@ -14,10 +14,6 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 ?>
 
-	<body>
-
-		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
-
 			<main class="centre-container">
 		
 				<h1>
@@ -105,11 +101,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 				</table>
 
 			</main>
-
-		<?php include( $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php' ); ?>
-
-	</body>
-
+			
 <?php
 
 $addscripts = '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js"></script>

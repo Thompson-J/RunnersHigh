@@ -17,7 +17,7 @@
 			<span>Remember user?</span>
 		</label>
 		
-		<button type="button" onclick="retrieveActivity()">Login</button>
+		<button type="button" onclick="login()">Login</button>
 
 		<p id="login_reset_link"><a href="#" onclick="passwordResetModal()">Reset your password&hellip;</a></p>
 

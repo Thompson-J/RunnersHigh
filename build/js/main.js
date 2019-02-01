@@ -1,5 +1,158 @@
 // Global scope
 var register_form_data;
+var homeurl = window.location.origin + "/";
+var cookieUsed = false;
+let loggedIn = false;
+
+// Development environment redirect
+if(window.location.hostname == "localhost" && window.location.port !== "3000") window.location.port = "3000";
+
+// Modaal
+$('.modaal').modaal({
+	before_open: function() {
+		// Close the nav sidebar by removing the active class
+		$('#site-wrapper, .sidenav, .burger-button, .burger-button div').removeClass('active');
+		$('#site-wrapper').addClass('modal-open');
+	},
+	before_close: function() {
+		$('#site-wrapper').removeClass('modal-open');
+	}
+});
+
+function loginCheck(callback) {
+
+	let http = new XMLHttpRequest();
+
+	http.open('POST', homeurl + "includes/process_login.php", true);
+	http.responseType = 'json';
+
+	// Read the response
+	http.onreadystatechange = function h() {
+		//console.log(this)
+		if (this.readyState == 4) {
+			// When the operation is complete and we are logged in
+			if (this.status == 200) {
+				loggedIn = true;
+				callback(loggedIn);
+			}
+		}
+	}
+
+	http.send()
+
+}
+
+// Do these things after loading the page
+$(document).ready(function() {
+
+	loginCheck(function(){
+		// Do something when we're logged in
+	});
+
+	// Add current class to links to the page we're on
+	let currentPage = document.location.href.match(/\/\/.+/)
+	$('a[href$="' + currentPage + '"]').addClass('current')
+
+	// Burger menu button
+	$(".burger-button").click(function() {
+
+		$('.sidenav, .burger-button, .burger-button div').toggleClass('active');
+
+	});
+
+	// Read the login cookie and enter details into the form fields
+	if ((Cookies.get("email") != undefined) && (Cookies.get("passwordhash") != undefined)) {
+
+		$("#login_email").val(Cookies.get("email"));
+		$("#login_password").val(Cookies.get("passwordhash"));
+		cookieUsed = true;
+		$("#login_remember_user").prop("checked", true);
+
+	};
+
+	// Submit forms with the ENTER key
+	$('input').keydown(function(e) {
+
+		if (e.keyCode == 13) {
+			$(this).parent().children('button').click();
+		}
+
+	});
+
+	// Allow all tables other than leaderboard to be sorted
+	$("table:not(#leaderboard)").each(function(){
+
+		$(this).find('th').each(function(col) {
+
+			// Attach event listeners to each column header
+			$(this).click(function() {
+
+				// Remove class from all col elements in colgroup
+				$(this).parents('table').find('col').removeClass('selected');
+				// Add class to a clicked col element
+				$(this).parents('table').find('col').eq(col).addClass('selected');
+
+				// Descending order
+				if ($(this).is('.asc')) {
+
+					$(this).removeClass('asc');
+					$(this).addClass('desc selected');
+					sortOrder = -1;
+				
+				} else {
+				// Ascending order
+				
+					$(this).addClass('asc selected');
+					$(this).removeClass('desc');
+					sortOrder = 1;
+				
+				}
+				
+				$(this).siblings().removeClass('asc selected');
+				$(this).siblings().removeClass('desc selected');
+
+				// Make an array of the contents the table
+				var arrData = $(this).parents('table').find('tbody > tr:has(td)').get();
+
+				// Sort this array
+				arrData.sort(function(a, b) {
+
+					var val1, val2;
+					val1 = $(a).children('td').eq(col).text().toUpperCase();
+					val2 = $(b).children('td').eq(col).text().toUpperCase();
+
+					// For each time/ date cell (a and b) set variables the datetime attribute value e.g 2018:01:31, 00:57:02
+					$(a).children('td').eq(col).children('time').each(function() {
+
+						val1 = $(this).attr('datetime');
+
+					});
+					$(b).children('td').eq(col).children('time').each(function() {
+
+						val2 = $(this).attr('datetime');
+
+					});
+
+					if ($.isNumeric(val1) && $.isNumeric(val2))
+						return sortOrder == 1 ? val1 - val2 : val2 - val1;
+					else
+						return val1 < val2 ? -sortOrder : (val1 > val2) ? sortOrder : 0;
+				});
+				//$(table + ' tbody tr').remove()
+				$.each(arrData, function(index, row) {
+					$(this).parents('tbody').append(row);
+				});
+
+			});
+
+		});
+
+	});
+
+	leaderboard();
+	
+
+});
 
 // When the submit button is clicked
 function registerSubmit() {
@@ -61,7 +214,7 @@ register_form_data = {
 	},
 	set password(value) {
 
-		// Check if the password match and satisfy security critera
+		// Check if the passwords match and satisfy security critera
 		let password_cnfrm = register_form.register_password_cnfrm.value;
 		const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]*$/;
 
@@ -99,7 +252,6 @@ register_form_data = {
 
 			// Create a variable in JSON format with the fullname, email and password properties
 			var json = JSON.stringify(this, ['fullname', 'email', 'password']);
-			//console.log(json)
 
 			// Create an AJAX object
 			let http = new XMLHttpRequest();
@@ -117,7 +269,7 @@ register_form_data = {
 					// If registration is successful
 					if (this.status == 200) {
 					
-						console.log(http)
+						// Close the registration modal and refresh the page
 						$('.modaal').modaal('close');
 						window.location.reload();
 					
@@ -147,186 +299,8 @@ register_form_data = {
 	}
 }
 
-var homeurl = window.location.origin + "/";
-var cookieUsed = false;
-var updateActivity;
-
-// Development environment redirect
-if(window.location.hostname == "localhost" && window.location.port !== "3000") window.location.port = "3000";
-
-// Modaal
-$('.modaal').modaal({
-	before_open: function() {
-		// Close the nav sidebar by removing the active class
-		$('#site-wrapper, .sidenav, .burger-button, .burger-button div').removeClass('active');
-		$('#site-wrapper').addClass('modal-open');
-	},
-	before_close: function() {
-		$('#site-wrapper').removeClass('modal-open');
-	}
-});
-
-function loginCheck() {
-
-	let http = new XMLHttpRequest();
-	//console.log('attempting auto login')
-
-	http.open('POST', homeurl + "includes/process_login.php", true);
-	http.responseType = 'json';
-	//console.log(http)
-	// Send the registation data
-
-	// Read the response
-	http.onreadystatechange = function() {
-		// When the operation is complete and we are logged in
-		if (this.readyState == 4 && this.status == 200) {
-			console.log('hello');
-		}
-	}
-	http.onerror = function() {
-		console.log('error')
-	}
-
-
-	http.send()
-
-	return(http)
-
-
-
-	/*$.ajax({
-		url: homeurl + "includes/process_login.php",
-		method: "POST",
-		dataType: "json",
-		success: function(response) {
-
-			//console.log("logged in");
-			//activity(response);
-			return true;
-
-		},
-		error: function(response) {
-
-			//console.log("auto login failed");
-			//console.log(response)
-			return false;
-
-		}
-	});*/
-
-}
-
-// Do these things after loading the page
-$(document).ready(function() {
-
-	// Add current class to links to the page we're on
-	let currentPage = document.location.href.match(/\/\/.+/)
-	//console.log(currentPage)
-	$('a[href$="' + currentPage + '"]').addClass('current')
-
-	// Burger menu button
-	$(".burger-button").click(function() {
-
-		$('.sidenav, .burger-button, .burger-button div').toggleClass('active');
-
-	});
-
-	// Read the login cookie and enter details into the form fields
-	if ((Cookies.get("email") != undefined) && (Cookies.get("passwordhash") != undefined)) {
-
-		$("#email").val(Cookies.get("email"));
-		$("#password").val(Cookies.get("passwordhash"));
-		cookieUsed = true;
-		$("#remember-user").prop("checked", true);
-		//console.log("used a cookie");
-
-	};
-
-	// Table sort
-	$("table:not(#leaderboard)").each(function(){
-
-		//console.log(this);
-
-		$(this).find('th').each(function(col) {
-
-			$(this).click(function() {
-
-				// Remove class from all col elements in colgroup
-				$(this).parents('table').find('col').removeClass('selected');
-				// Add class to a clicked col element
-				$(this).parents('table').find('col').eq(col).addClass('selected');
-
-				// Descending order
-				if ($(this).is('.asc')) {
-
-					$(this).removeClass('asc');
-					$(this).addClass('desc selected');
-					sortOrder = -1;
-				
-				} else {
-				// Ascending order
-				
-					$(this).addClass('asc selected');
-					$(this).removeClass('desc');
-					sortOrder = 1;
-				
-				}
-				
-				$(this).siblings().removeClass('asc selected');
-				$(this).siblings().removeClass('desc selected');
-
-				// Make an array of the contents the table
-				var arrData = $(this).parents('table').find('tbody > tr:has(td)').get();
-
-				// Sort this array
-				arrData.sort(function(a, b) {
-
-					var val1, val2;
-
-					val1 = $(a).children('td').eq(col).text().toUpperCase();
-					val2 = $(b).children('td').eq(col).text().toUpperCase();
-
-					// For each time/ date cell (a and b) set variables the datetime attribute value e.g 2018:01:31, 00:57:02
-					$(a).children('td').eq(col).children('time').each(function() {
-
-						val1 = $(this).attr('datetime');
-
-					});
-					$(b).children('td').eq(col).children('time').each(function() {
-
-						val2 = $(this).attr('datetime');
-
-					});
-
-					if ($.isNumeric(val1) && $.isNumeric(val2))
-						return sortOrder == 1 ? val1 - val2 : val2 - val1;
-					else
-						return val1 < val2 ? -sortOrder : (val1 > val2) ? sortOrder : 0;
-				});
-				//$(table + ' tbody tr').remove()
-				$.each(arrData, function(index, row) {
-					$(this).parents('tbody').append(row);
-				});
-
-			});
-
-		});
-
-		/* $('#modal-activity').change(function() {	
-
-			if ($(this).prop('checked') === true) loginCheck();
-
-		}); */
-
-	});
-
-	leaderboard();
-	
-
-});
-
 // Check the login details with the database
-function retrieveActivity() {
+function login() {
 
 	//window.alert("hello world");
 	var email = document.getElementById("login_email").value;
@@ -338,50 +312,42 @@ function retrieveActivity() {
 
 		// Hash the password before sending it.
 		if (!cookieUsed) password = hex_sha512(password);
-		//console.log(cookieUsed);
 
 		// Create a variable in JSON format with the fullname, email and password properties
 		var json = JSON.stringify({ 'email': email, 'password': password });
-		//console.log(json)
 
 		// Create an AJAX object
 		let http = new XMLHttpRequest();
 		http.open('POST', homeurl + "includes/process_login.php", true);
 		http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
 		http.responseType = 'json';
-		//console.log(http)
 		// Send the registation data
 		http.send(json)
 
 		// Read the response
-		http.onload = function() {
+		http.onreadystatechange = function() {
 			// When the operation is complete
 			if (this.readyState == 4) {
 
-				// If registration is successful
+				// If login is successful
 				if (this.status == 200) {
 
-					console.log(http);
-
 					// Remove any login form errors
-					$("#bad-email").removeClass("input-error");
-					$("#bad-password").removeClass("input-error");
+					$("#login_bad_email").removeClass("input-error");
+					$("#login_bad_password").removeClass("input-error");
 
 					// Create cookies of the login information
-					if ($("#remember-user").is(":checked")) {
+					if ($("#login_remember_user").is(":checked")) {
 						Cookies.set('email', email, { expires: 7, path: '' });
 						Cookies.set('passwordhash', password, { expires: 7, path: '' })
 					}
 
 					// Redirect the user to the activity page
 					window.location.replace(homeurl + "activity/");
-
-					//activity(http.response);
 				
 				} else {
 
 					var error = http.response
-					console.log(error);
 
 					switch(error.result) {
 						
@@ -417,90 +383,47 @@ function retrieveActivity() {
 			
 }
 
-function activity(response) {
-
-	//console.log(response);
-
-	// Add the json response to the activity table
-	if (!updateActivity) {
-
-		var activity = response.data.activity;
-		console.log(activity)
-		// activity.length = how many run sessions the runner's logged
-
-		// Add the runner's runs to the HTML table
-		for (i = 0; i < activity.length; i++) {
-
-			// This row will change with each successive loop
-			var row = activity[i];
-
-			var distance = row.distance;
-
-			// Format the date
-			var d = new Date(row.date);
-
-			// Short day, date with ordinal and short month 
-			momentdate = moment(d, 'YYYY-DD-MM', true).format('ddd Do MMM YYYY');
-
-			date = momentdate.replace(/(\d+)([a-z]+)/, "$1<sup>$2</sup>");
-
-			// Add the JSON to the HTML markup
-			var rowMarkup = "<tr><td><a href='analyse/?s=" + activity[i].run_id + "'>" + activity[i].run_id + "</a></td><td>" + parseInt(i+1) + "</td><td>" + row.activity + "</td><td><time datetime='" + row.date + "'>" + date + "</time></td><td>" + distance + "</td><td>" + row.start_time + "</td><td>"  + row.finish_time + "</td><td>" + row.duration + "</td></tr>";
-
-			// Display the JSON and HTML markup in the console
-			//console.log(rowMarkup);
-
-			// Insert the data
-			$('#activity tbody').append(rowMarkup);
-
-		}
-
-	}
-
-	// Finished updating the activity table
-	updateActivity = true;
-
-}
-
 function leaderboard() {
 
 	// AJAX communication with leaderboard script
-	$.ajax({
-		url: homeurl + "leaderboard.php",
-		method: "GET",
-		dataType: "json",
-		success: function(response) {
+	let http = new XMLHttpRequest();
+	http.open('GET', homeurl + 'leaderboard.php', true);
+	http.responseType = 'json';
+	// Send the registation data
+	http.send()
 
-			//console.log(response);
+	// Read the response
+	http.onreadystatechange = function() {
 
-			var leaderboard = response.data;
+		// When the operation is complete
+		if (this.readyState == 4) {
 
-			// Add the runner's runs to the HTML table
-			for (i = 0; i < leaderboard.length; i++) {
+			// If the leaderboard has sent the response
+			if (this.status == 200) {
 
-				// This row will change with each successive loop
-				var row = leaderboard[i];
+				var leaderboard = this.response.data;
 
-				var position = i + 1;
-				//console.log(position);
+				// Add the runner's runs to the HTML table
+				for (i = 0; i < leaderboard.length; i++) {
 
-				// Add the JSON to the HTML markup
-				var rowMarkup = "<tr><td>" + position + "</td><td>" + row.name + "</td><td>" + row.duration + "</td></tr>";
+					// This row will change with each successive loop
+					var row = leaderboard[i];
 
-				// Display the JSON and HTML markup in the console
-				//console.log(rowMarkup);
+					var position = i + 1;
 
-				var temp = $('#leaderboard');
-				//console.log(temp);
+					// Add the JSON to the HTML markup
+					var rowMarkup = "<tr><td>" + position + "</td><td>" + row.name + "</td><td>" + row.duration + "</td></tr>";
 
-				// Insert the data
-				$('#leaderboard tbody').append(rowMarkup);
+					// Insert the data
+					$('#leaderboard tbody').append(rowMarkup);
+
+				}
 
 			}
 
 		}
 
-	});
+	}
 
 }
 
@@ -600,7 +523,6 @@ submit_activity = {
 
 		// Create a variable in JSON format with the activity, date, distance, starttime, finishtime and duration properties
 		var json = JSON.stringify(this, ['activity', 'date', 'distance', 'start_time', 'finish_time', 'duration', 'waypoints']);
-		console.log(json)
 
 		// Create an AJAX object
 		let http = new XMLHttpRequest();
@@ -623,38 +545,3 @@ submit_activity = {
 
 	}
 }
-
-function getActivityById(id) {
-
-	// Create an AJAX object
-	let http = new XMLHttpRequest();
-	http.open('POST', window.location.origin + '/includes/activityById.php', true);
-	http.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-	http.responseType = 'json';
-	// Request the activity data
-	http.send('{"s": ' + id + '}')
-
-	// Read the response
-	http.onreadystatechange = function() {
-		//console.log(this);
-		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-			console.log(this.response)
-		} else if (this.status == 400) {
-			alert("There's something wrong with the data provided");
-		}
-	}
-
-}
-
-// When the page has loaded
-$(function() {
-	// Submit forms with the ENTER key
-	$('input').keydown(function(e) {
-
-		if (e.keyCode == 13) {
-			$(this).parent().children('button').click();
-		}
-
-	});
-
-});

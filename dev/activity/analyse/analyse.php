@@ -7,8 +7,6 @@ $firstname = $firstname[0];
 
 $title = 'Session ' . $_GET['s'] . TITLE_DELIMITER . TITLE;
 
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
-
 // Retrieve the session the user requested
 // Start the session index at 1 instead of 0
 $sessionid = $_GET['s'];
@@ -17,9 +15,6 @@ $sessionid = $_GET['s'];
 $activity = $distance = $date = $start_time = $finish_time = $duration = '';
 
 $activity_array = activityById($_SESSION['user_id'], $sessionid, $mysqli);
-
-//var_dump($activity_array);
-//die();
 
 if($activity_array['result'] === false) {
 
@@ -40,11 +35,9 @@ if($activity_array['result'] === false) {
 
 }
 
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
+
 ?>
-
-	<body>
-
-		<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
 
 			<main class="centre-container">
 		
@@ -52,7 +45,7 @@ if($activity_array['result'] === false) {
 					Analyse Session
 				</h1>
 
-				<div id='map'></div> 
+				<div class="map" id='analyse_map'></div> 
 
 				<p id="sessionid">Run ID: <?php echo $sessionid; ?></p>
 				<p>Activity: <?php echo $activity; ?></p>
@@ -62,11 +55,7 @@ if($activity_array['result'] === false) {
 				<p>Finish time: <?php echo $finish_time; ?></p>
 				<p>Duration: <?php echo $duration; ?></p>
 
-				</main>
-
-		<?php include( $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php' ); ?>
-
-	</body>
+			</main>
 
 <?php
 
