@@ -1,5 +1,29 @@
 var geolocation = [];
 
+// Launch fullscreen for browsers that support it!
+// Find the right method, call on correct element
+function launchIntoFullscreen(element) {
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if(element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if(element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  }
+}
+// Whack fullscreen
+function exitFullscreen() {
+  if(document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if(document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if(document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+
 // When the page has loaded
 $(function() {
 
@@ -61,6 +85,7 @@ $(function() {
 		// Not currently recording a run
 		var recording = false;
 		var locationTimer;
+		var wakelock = new NoSleep();
 
 		// When the record button is clicked
 		$('#record_btn').click(function() {
@@ -72,6 +97,24 @@ $(function() {
 
 				// Start recording
 				recording = true;
+
+				// Add the recording class
+				document.body.classList.add('recording');
+
+				// Enable the wake lock
+				document.addEventListener('click', function enableNoSleep() {
+
+					document.removeEventListener('click', enableNoSleep, false);
+
+					// Enter fullscreen
+					//launchIntoFullscreen(document.documentElement); // the whole page
+					launchIntoFullscreen(document.getElementById('timer')); // specific element
+					wakelock.enable();
+
+					// Vibrate
+					window.navigator.vibrate(200);
+				
+				}, false);
 				
 				// Record today's date and start time
 				d = new moment();
@@ -92,6 +135,17 @@ $(function() {
 				duration = moment.utc(duration).format('HH:mm:ss');
 				//console.log(duration)
 
+				// Disable the wake lock
+				wakelock.disable();
+				// Exit fullscreen
+				exitFullscreen();
+
+				// Vibrate
+				window.navigator.vibrate(200);
+
+				// Remove the recording class
+				document.body.classList.remove('recording');
+
 				// Stop the timer
 				clearTimeout(t);
 				recording = false;
@@ -102,7 +156,7 @@ $(function() {
 
 				setTimeout(function() {
 					
-					$('#distance').text(distance + ' meters');
+					$('#distance').text(distance);
 				
 				}, 1000);
 			
@@ -199,6 +253,44 @@ $(function() {
 			// Plot the point on the map
 			tomtom.L.marker([geolocation[geolocation.length - 1].latitude, geolocation[geolocation.length - 1].longitude], markerOptions)
 			.bindPopup("Waypoint: " + waypointCount).addTo(map);
+
+			// Get the distance
+			var points = '';
+
+			// Add the first waypoint to the string	
+			points += geolocation[0].latitude + ',' + geolocation[0].longitude + ":";
+			
+			// Add the last waypoint to the string
+			points += geolocation[geolocation.length-1].latitude + ',' + geolocation[geolocation.length-1].longitude;
+
+			let supportingPoints = geolocation.slice(1,-1);
+
+			if (supportingPoints.length == 0) {
+
+				tomtom.routing().locations(points).go()
+				  .then(function(routeGeoJson) {
+				  	// routeGeoJson is TomTom's route
+				  	console.log(routeGeoJson)
+				  	// Store the distance of the route
+				    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
+				  });
+
+			} else {
+
+				tomtom.routing().locations(points).supportingPoints(supportingPoints).go()
+				  .then(function(routeGeoJson) {
+				  	// routeGeoJson is TomTom's route
+				  	console.log(routeGeoJson)
+				  	// Store the distance of the route
+				    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
+				  });
+
+			}
+
+			if (distance > 1000) distance = distance / 1000 + " kilometers";
+			else distance = distance + " meters";
+			$('#distance').text(distance);
+
 		}
 
 		// Requires network access
@@ -215,21 +307,49 @@ $(function() {
 
 			let supportingPoints = geolocation.slice(1,-1);
 
-			// Send the geolocation to TomTom and ask for a calculated route
-			// eg. points = '53.431320,-2.433381:53.433481,-2.429637';
-			tomtom.routing().locations(points).supportingPoints(supportingPoints).go()
-		  .then(function(routeGeoJson) {
-		  	// routeGeoJson is TomTom's route
-		  	var route = tomtom.L.geoJson(routeGeoJson, {
-		    	style: {color: '#00d7ff', opacity: 0.6, weight: 6}
-		    })
-		    // Highlight the route on the map
-		    .addTo(map);
-				map.fitBounds(route.getBounds(), {padding: [5, 5]});
-		  	console.log(routeGeoJson)
-		  	// Store the distance of the route
-		    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
-		  });
+			if (supportingPoints.length == 0) {
+
+				// Send the geolocation to TomTom and ask for a calculated route
+				// eg. points = '53.431320,-2.433381:53.433481,-2.429637';
+				tomtom.routing().locations(points).go()
+			  .then(function(routeGeoJson) {
+			  	// routeGeoJson is TomTom's route
+			  	var route = tomtom.L.geoJson(routeGeoJson, {
+			    	style: {color: '#00d7ff', opacity: 0.6, weight: 6}
+			    })
+			    // Highlight the route on the map
+			    .addTo(map);
+					map.fitBounds(route.getBounds(), {padding: [5, 5]});
+			  	console.log(routeGeoJson)
+			  	// Store the distance of the route
+			    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
+			  });
+
+			} else {
+
+				// Send the geolocation to TomTom and ask for a calculated route
+				// eg. points = '53.431320,-2.433381:53.433481,-2.429637';
+				tomtom.routing().locations(points).supportingPoints(supportingPoints).go()
+			  .then(function(routeGeoJson) {
+			  	// routeGeoJson is TomTom's route
+			  	var route = tomtom.L.geoJson(routeGeoJson, {
+			    	style: {color: '#00d7ff', opacity: 0.6, weight: 6}
+			    })
+			    // Highlight the route on the map
+			    .addTo(map);
+					map.fitBounds(route.getBounds(), {padding: [5, 5]});
+			  	console.log(routeGeoJson)
+			  	
+			  	// Store the distance of the route
+			    distance = routeGeoJson.features[0].properties.summary.lengthInMeters;
+			    if (distance > 1000) distance = distance / 1000 + " kilometers";
+					else distance = distance + " meters";
+
+			  });
+
+			}
+
+
 		}
 
 	}

@@ -1,6 +1,55 @@
 /* Record Activity 
 =====================================*/
 
+// Fullscreen <HTML> element
+:-webkit-full-screen {
+  background-color: black;
+}
+:-moz-full-screen {
+  background-color: black;
+}
+:-ms-fullscreen {
+  background-color: black;
+}
+:full-screen {
+  background-color: black;
+}
+:fullscreen {
+  background-color: black;
+}
+
+// Backdrop behind the element
+::backdrop, ::-ms-backdrop {
+  background-color: black;
+}
+
+:-webkit-full-screen #site-wrapper {
+  background-color: black;
+}
+:-moz-full-screen #site-wrapper {
+  background-color: black;
+}
+:-ms-fullscreen #site-wrapper {
+  background-color: black;
+}
+:full-screen #site-wrapper {
+  background-color: black;
+}
+:fullscreen #site-wrapper {
+  background-color: black;
+}
+
+.recording #timer {
+	
+	color: white;
+	text-align: center;
+	
+	#record_clear, #record_submit {
+		display: none;
+	}
+
+}
+
 #timer {
 
 	#record_btn {
@@ -38,4 +87,12 @@
 
 	}
 
+}
+
+#record_map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > svg > g > path {
+	stroke: $red;
+  stroke-linecap: round;
+  stroke-dasharray: 10px;
+  stroke-opacity: 1;
+  stroke-width: 4px;
 }

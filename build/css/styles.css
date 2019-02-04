@@ -1122,6 +1122,45 @@ form button {
 
 /* Record Activity 
 =====================================*/
+:-webkit-full-screen {
+  background-color: black; }
+
+:-moz-full-screen {
+  background-color: black; }
+
+:-ms-fullscreen {
+  background-color: black; }
+
+:full-screen {
+  background-color: black; }
+
+:fullscreen {
+  background-color: black; }
+
+::backdrop, ::-ms-backdrop {
+  background-color: black; }
+
+:-webkit-full-screen #site-wrapper {
+  background-color: black; }
+
+:-moz-full-screen #site-wrapper {
+  background-color: black; }
+
+:-ms-fullscreen #site-wrapper {
+  background-color: black; }
+
+:full-screen #site-wrapper {
+  background-color: black; }
+
+:fullscreen #site-wrapper {
+  background-color: black; }
+
+.recording #timer {
+  color: white;
+  text-align: center; }
+  .recording #timer #record_clear, .recording #timer #record_submit {
+    display: none; }
+
 #timer #record_btn {
   width: 35px;
   height: 35px;
@@ -1147,6 +1186,13 @@ form button {
     box-shadow: 0px 0px 5px 13px rgba(173, 0, 0, 0.3); }
   90% {
     box-shadow: 0px 0px 5px 13px rgba(173, 0, 0, 0); } }
+
+#record_map > div.leaflet-pane.leaflet-map-pane > div.leaflet-pane.leaflet-overlay-pane > svg > g > path {
+  stroke: #ff7755;
+  stroke-linecap: round;
+  stroke-dasharray: 10px;
+  stroke-opacity: 1;
+  stroke-width: 4px; }
 
 #name {
   font-size: 2em; }
