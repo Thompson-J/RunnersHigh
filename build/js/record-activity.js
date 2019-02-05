@@ -1,5 +1,5 @@
 var geolocation = [];
-let geodata = {}
+let geodata = [];
 
 // Launch fullscreen for browsers that support it!
 // Find the right method, call on correct element
@@ -175,7 +175,7 @@ $(function() {
 
 			submit_activity.activity = document.getElementById('record_title').value;
 			submit_activity.date = date;
-			submit_activity.distance = distance + ' meters';
+			submit_activity.distance = distance;
 			submit_activity.start_time = start_time.format('HH:mm:ss');
 			submit_activity.finish_time = finish_time.format('HH:mm:ss');
 			submit_activity.duration = duration;

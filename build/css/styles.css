@@ -1238,7 +1238,8 @@ form button {
 
 .map {
   height: 500px;
-  width: 500px; }
+  width: 500px;
+  z-index: 0; }
 
 footer {
   width: 100%;

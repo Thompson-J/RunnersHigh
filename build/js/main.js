@@ -6,6 +6,7 @@ let loggedIn = false;
 
 // Development environment redirect
 if(window.location.hostname == "localhost" && window.location.port !== "3000") window.location.port = "3000";
+else if(window.location.protocol !== 'https:') window.location.protocol = 'https:';
 
 // Modaal
 $('.modaal').modaal({
