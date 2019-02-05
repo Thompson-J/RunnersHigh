@@ -1,4 +1,5 @@
 var geolocation = [];
+let geodata = {}
 
 // Launch fullscreen for browsers that support it!
 // Find the right method, call on correct element
@@ -178,8 +179,12 @@ $(function() {
 			submit_activity.start_time = start_time.format('HH:mm:ss');
 			submit_activity.finish_time = finish_time.format('HH:mm:ss');
 			submit_activity.duration = duration;
+			let i;
+			for(i = 0; i < geolocation.length; i++) {
+				geodata[i] = {'accuracy': geolocation[i].accuracy, 'altitude': geolocation[i].altitude, 'altitudeAccuracy': geolocation[i].altitudeAccuracy, 'heading': geolocation[i].heading, 'latitude': geolocation[i].latitude, 'longitude': geolocation[i].longitude, 'speed': geolocation[i].speed, 'timestamp': geolocation[i].timestamp}
+			}
 			// Convert the geolocation array into a string
-			submit_activity.waypoints = JSON.stringify(geolocation);
+			submit_activity.waypoints = JSON.stringify(geodata);
 
 			console.log(submit_activity)
 			submit_activity.submit();
@@ -265,6 +270,11 @@ $(function() {
 
 			let supportingPoints = geolocation.slice(1,-1);
 
+			var i;
+			for(i = 0; i < supportingPoints.length; i++) {
+				supportingPoints[i] = supportingPoints[i].latitude + "," + supportingPoints[i].longitude;
+			}
+
 			if (supportingPoints.length == 0) {
 
 				tomtom.routing().locations(points).go()
@@ -306,6 +316,11 @@ $(function() {
 			points += geolocation[geolocation.length-1].latitude + ',' + geolocation[geolocation.length-1].longitude;
 
 			let supportingPoints = geolocation.slice(1,-1);
+			
+			var i;
+			for(i = 0; i < supportingPoints.length; i++) {
+				supportingPoints[i] = supportingPoints[i].latitude + "," + supportingPoints[i].longitude;
+			}
 
 			if (supportingPoints.length == 0) {
 
