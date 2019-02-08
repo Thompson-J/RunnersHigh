@@ -1,6 +1,7 @@
 **/_gsdata_/**
-psl-config.php
+psl_config.php
 node_modules/**
 .DS_Store
 *.sublime-workspace
 package-lock.json
+*/img/user_photos/*

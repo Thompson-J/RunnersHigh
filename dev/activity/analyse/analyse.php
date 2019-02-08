@@ -66,4 +66,4 @@ $addscripts = "<script type='application/json' id='geolocation'>" . $waypoints .
 <script src='" . HOMEURL . "tomtom/tomtom.min.js'></script>
 <script type='text/javascript' src='" . HOMEURL . "js/analyse.js'></script>";
 
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/end_of_page.php'; ?>

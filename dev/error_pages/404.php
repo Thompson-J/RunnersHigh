@@ -16,4 +16,4 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 			</main>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/end_of_page.php'; ?>

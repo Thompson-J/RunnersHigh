@@ -1,6 +1,6 @@
 <?php
 
-include_once 'psl-config.php';
+include_once 'psl_config.php';
 include_once 'db_connect.php';
 
 function sec_session_start() {
@@ -149,7 +149,7 @@ function login_check($mysqli) {
 	}
 }
 
-function checkbrute($user_id, $mysqli) {
+function checkbrute($userid, $mysqli) {
 	// Get timestamp of current time 
 	$now = time();
 
@@ -160,7 +160,7 @@ function checkbrute($user_id, $mysqli) {
 																FROM login_attempts 
 																WHERE user_id = ? 
 																AND `time` > ?")) {
-		$stmt->bind_param('ii', $user_id, $valid_attempts);
+		$stmt->bind_param('ii', $userid, $valid_attempts);
 
 		// Execute the prepared query. 
 		$stmt->execute();
@@ -349,7 +349,7 @@ function analyse($userid, $session, $mysqli) {
 
 }
 
-function activityById($user_id, $run_id, $mysqli) {
+function activityById($userid, $run_id, $mysqli) {
 
 	$session = [];
 
@@ -359,7 +359,7 @@ function activityById($user_id, $run_id, $mysqli) {
 														WHERE user_id = ? AND run_id = ?
 														LIMIT 1");
 
-	$stmt->bind_param('ii', $user_id, $run_id);
+	$stmt->bind_param('ii', $userid, $run_id);
 	$stmt->execute();   // Execute the prepared query.
 	
 	$result = $stmt->get_result();
@@ -385,6 +385,9 @@ function activityById($user_id, $run_id, $mysqli) {
 		return array('result' => false, 'data' => null);
 
 	}
-
 	
+}
+
+function modifyAccount($userid, $data, $mysqli) {
+
 }

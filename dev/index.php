@@ -12,20 +12,20 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 			<div class="centre-container">
 
-				<h2 <?php
+				<h1 <?php
 
 					// Enable landing page animations
 					if ($login_check['result'] === false) echo ('class="animated fadeIn"');
 
-				?> >Just been for a run?</h2>
+				?> >Just been for a run?</h1>
 				<?php 
 
 				$login_check = login_check($mysqli);
 
 				if ($login_check['result'] === true) {
-				echo '<h3><a href="' . HOMEURL . 'activity/">Activity</a></h3>';
+				echo '<h2><a href="' . HOMEURL . 'activity/">Activity</a></h2>';
 				} else {
-				echo '<h3 class="animated fadeIn"><a href="#register" data-modaal-type="inline" class="modaal">Register</a> &sol; <a data-modaal-type="inline" class="modaal" href="#login">Login</a></h3>';
+				echo '<h2 class="animated fadeIn"><a href="#register" data-modaal-type="inline" class="modaal">Register</a> &sol; <a data-modaal-type="inline" class="modaal" href="#login">Login</a></h2>';
 				}
 				?>
 
@@ -93,4 +93,4 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 $addscripts = "<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment-with-locales.min.js'></script>";
 
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/end_of_page.php'; ?>

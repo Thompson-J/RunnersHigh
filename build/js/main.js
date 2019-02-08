@@ -1,12 +1,13 @@
 // Global scope
-var register_form_data;
 var homeurl = window.location.origin + "/";
 var cookieUsed = false;
 let loggedIn = false;
+var register_form_data;
+var modify_form_data = new FormData();
 
 // Development environment redirect
 if(window.location.hostname == "localhost" && window.location.port !== "3000") window.location.port = "3000";
-else if(window.location.protocol !== 'https:') window.location.protocol = 'https:';
+else if( (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") && window.location.protocol !== 'https:') window.location.protocol = 'https:';
 
 // Modaal
 $('.modaal').modaal({
@@ -45,6 +46,73 @@ function loginCheck(callback) {
 
 // Do these things after loading the page
 $(document).ready(function() {
+
+	// Setup accordians
+	$('.accordian_trigger').each(function() {
+		$(this).click(function() {
+			// Store the accordian
+			var accordian = $(this).next('.accordian_box');
+			if(!$(accordian).hasClass('open')) {
+				// Get the height of the element
+				let currentHeight = $(accordian).height();
+				// Get the expanded height of the element
+				let autoHeight = $(accordian).css('height', 'auto').height();
+				// Animate the accordian
+				$(accordian)
+					.height(currentHeight).animate({
+						height: autoHeight
+					}, 500);
+				// Toggle the collapse class
+				$(accordian).toggleClass('open');
+			} else {
+				// Animate the accordian
+				$(accordian).animate({
+					height: 0
+				}, 500);
+				// Toggle the collapse class
+				$(accordian).toggleClass('open');
+			}
+		});
+	})
+
+	// Photo upload
+	$('#modify_photo').on('change', function() {
+
+		$('#modify_photo_container').removeClass('animated bounceIn')
+		// Prepare a FormData object
+		let form = new FormData();
+		// Pass the photo to it
+		form.set('photo', this.files[0]);
+		console.log(Array.from(form.entries()))
+
+		// Create a new AJAX request
+		let http = new XMLHttpRequest();
+		http.open('POST', homeurl + 'includes/modify_photo.php', true);
+		// Send the registation data
+		http.send(form)
+
+		// Read the response
+		http.onreadystatechange = function() {
+
+			console.log(this);
+
+			// When the operation is complete
+			if (this.readyState == 4) {
+
+				// If registration is successful
+				if (this.status == 200) {
+					let img_src = $('#modify_photo_img').attr('src');
+					// Reload just this image by adding a parameter to the src
+					$('#modify_photo_img').attr('src', img_src + "?a=0");
+					// Animate it to the user
+					$('#modify_photo_container').addClass('animated bounceIn');
+				}
+
+			}
+
+		}
+
+	});
 
 	loginCheck(function(){
 		// Do something when we're logged in
@@ -162,10 +230,16 @@ function registerSubmit() {
 
 	// Name
 	register_form_data.fullname = register_form.register_fullname.value;
+	// Gender
+	register_form_data.gender = register_form.register_gender.value;
+	// Date of birth
+	register_form_data.dob = register_form.register_dob.value;
 	// Email
 	register_form_data.email = register_form.register_email.value;
 	// Password
 	register_form_data.password = register_form.register_password.value;
+	// Privacy
+	register_form_data.privacy = register_form.register_privacy.value;
 
 	// Test if the passwords have been correctly filled
 	register_form_data.submit();
@@ -193,6 +267,25 @@ register_form_data = {
 	get fullname() {
 		// Get the name
 		return this._fullname
+	},
+	set gender(value) {
+		// If this is either male or femail
+		if(value == ('male' || 'femail')) {
+			this._gender = value;
+		}
+	},
+	get gender() {
+		// Get the gender
+		return this._gender;
+	},
+	set dob(value) {
+		// If this is a valid date
+		var dob_regex = /^\d\d\d\d\-\d\d\-\d\d$/;	
+		if(dob_regex.test(value)) this._dob = value;
+	},
+	get dob() {
+		// Get the date of birth
+		return this._dob;
 	},
 	set email(value) {
 
@@ -247,12 +340,20 @@ register_form_data = {
 		// Get the name
 		return this._password
 	},
+	set privacy(value) {
+		if(value == ('public' || 'private')) {
+			this._privacy = value;
+		}
+	},
+	get privacy() {
+		return this._privacy;
+	},
 	submit : function submit() {
 
 		if( this.fullname !== (null || undefined) && this.email !== (null || undefined) && this.password !== (null || undefined) ) {
 
 			// Create a variable in JSON format with the fullname, email and password properties
-			var json = JSON.stringify(this, ['fullname', 'email', 'password']);
+			var json = JSON.stringify(this, ['fullname', 'gender', 'dob', 'email', 'password', 'privacy']);
 
 			// Create an AJAX object
 			let http = new XMLHttpRequest();
@@ -264,6 +365,7 @@ register_form_data = {
 
 			// Read the response
 			http.onreadystatechange = function() {
+
 				// When the operation is complete
 				if (this.readyState == 4) {
 
@@ -520,7 +622,7 @@ submit_activity = {
 		return this._waypoints
 
 	},
-	submit : function submit() {
+	submit: function submit() {
 
 		// Create a variable in JSON format with the activity, date, distance, starttime, finishtime and duration properties
 		var json = JSON.stringify(this, ['activity', 'date', 'distance', 'start_time', 'finish_time', 'duration', 'waypoints']);
@@ -538,6 +640,53 @@ submit_activity = {
 			//console.log(this);
 			if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 				location.reload();
+			} else if (this.status == 400) {
+				alert("There's something wrong with the data provided");
+			}
+
+		}
+
+	}
+}
+
+$('#modify_account_update').click(function() {
+
+	//modify_form_data.set('photo', $('#modify_photo').prop('files')[0]);
+	modify_form_data.set('email', $('#modify_email').val());
+	//modify_form_data.set('password', hex_sha512($('#modify_email').val()));
+	//modify_form_data.set('privacy', $('#modify_privacy input:checked').val());
+	//modify_form_data.set('delete_password', hex_sha512($('#modify_delete_password').val()));
+	//modify_form_data.set('delete_cnfrm', $('#modify_delete_cnfrm:checked').val());
+	modify_account_data.submit();
+
+});
+
+modify_account_data = {
+	set photo(value) {
+		if (value !== (undefined || null || "")) {
+			this._photo = value;
+		}
+	},
+	get photo() {
+		return this._photo;
+	},
+	submit: function submit() {
+		
+		// Create a variable in JSON format with the activity, date, distance, starttime, finishtime and duration properties
+
+		// Create an AJAX object
+		let http = new XMLHttpRequest();
+		http.open('POST', window.location.origin + '/includes/modify_account.php', true);
+		http.setRequestHeader("Content-Type", "multipart/form-data;");
+		// Send the registation data
+		http.send(modify_form_data);
+
+		// Read the response
+		http.onreadystatechange = function() {
+			
+			console.log(this);
+			if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+				//location.reload();
 			} else if (this.status == 400) {
 				alert("There's something wrong with the data provided");
 			}

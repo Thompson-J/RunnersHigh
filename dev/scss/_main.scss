@@ -1,9 +1,41 @@
+/* Main
+=====================================*/
+
 html {
 	background: $red;
 }
 
 *, ::after, ::before {
 	box-sizing: border-box;
+}
+
+h1 {
+  font-family: $primaryFont;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 4em;
+  text-align: center;
+  line-height: 0.9em;
+  margin-top: 10px;
+  color: $blue;
+}
+
+h2 {
+	color: white;
+	font-family: $primaryFont;
+	font-weight: normal;
+	font-size: 2em;
+	text-align: center;
+	line-height: 1;
+	margin: 0;
+}
+
+h3 {
+	color: black;
+	font-family: $primaryFont;
+	font-weight: bold;
+	font-size: 1.5em;
+	margin: 0;
 }
 
 a {
@@ -26,7 +58,7 @@ a:hover {
 
 body {
 	margin: 0;
-	font-family: "Branding", sans-serif;
+	font-family: $primaryFont;
 }
 
 .hidden {
@@ -66,25 +98,6 @@ body {
 	width: calc(100% - 1em);
 }
 
-h2 {
-	color: white;
-	font-family: "Branding", sans-serif;
-	font-weight: normal;
-	font-size: 4em;
-	text-align: center;
-	line-height: 1;
-	margin: 0;
-}
-
-h3 {
-	color: white;
-	font-family: "Branding", sans-serif;
-	font-weight: normal;
-	font-size: 1.7em;
-	text-align: center;
-	margin: 0;
-}
-
 .centre-container {
 	display: -webkit-box; 
 	display: -moz-box;
@@ -109,7 +122,7 @@ h3 {
 }
 
 .modal-link {
-	font-family: "Branding", sans-serif;
+	font-family: $primaryFont;
 	font-weight: normal;
 	color: white;
 	cursor: pointer;
@@ -121,11 +134,11 @@ h3 {
 }
 
 main {
-	padding-bottom: 2em;
+	padding-bottom: calc(2em + 120px);
 }
 
 main p {
-	font-family: "Branding", sans-serif;
+	font-family: $primaryFont;
 	font-variant-numeric: tabular-nums;
 }
 
@@ -214,6 +227,17 @@ table {
 		color: initial;
 		cursor: default;
 		font-weight: 500;
+	}
+
+}
+
+.accordian_box {
+
+	overflow: hidden;
+	height: 0;
+
+	&.open {
+		
 	}
 
 }

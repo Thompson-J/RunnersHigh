@@ -16,11 +16,9 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 			<main class="centre-container">
 		
-				<h1>
-					Dashboard
-				</h1>
+				<h1>Activity</h1>
 
-				<p id="name"><?php echo $_SESSION['name']; ?></p>
+				<h2 id="name"><?php echo $_SESSION['name']; ?></h2>
 
 				<table id="activity" class="horizontal-centre">
 
@@ -108,4 +106,4 @@ $addscripts = '<script type="text/javascript" src="https://cdnjs.cloudflare.com/
 <link rel="stylesheet" type="text/css" href="' . HOMEURL . 'tomtom/map.css"/>
 <script src="' . HOMEURL . '/tomtom/tomtom.min.js"></script>';
 
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/end_of_page.php'; ?>

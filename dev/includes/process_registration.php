@@ -22,10 +22,17 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 $password = filter_var($data['password'], FILTER_SANITIZE_STRING);
 // Check that the password (sha512 hashed) is 128 characters long
 // If it's not, the form data was malformed
-if (strlen($password) != 128) {
+if (strlen($password) !== 128) {
 
   $error_msg .= 'Invalid password configuration. ';
 }
+
+
+$gender = (isset($data['gender']) ? filter_var($data['gender'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE) : null);
+
+$dob = (isset($data['dob']) ? filter_var($data['dob'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE) : null);
+
+$privacy = (isset($data['privacy']) ? filter_var($data['privacy'], FILTER_SANITIZE_STRING, FILTER_NULL_ON_FAILURE) : null);
 
 // Email validity and password validity have been checked client side.
 // This should should be adequate as nobody gains any advantage from
@@ -61,20 +68,20 @@ if (empty($error_msg)) {
     $fullname = filter_var($data['fullname'], FILTER_SANITIZE_STRING);
 
     // Insert the new user into the database 
-    $prep_stmt = "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)";
+    $prep_stmt = "INSERT INTO users (name, email, dob, gender, privacy, password_hash) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $mysqli->prepare($prep_stmt);
 
     if($stmt) {
 
-        $stmt->bind_param('sss', $fullname, $email, $password);
+        $stmt->bind_param('ssssss', $fullname, $email, $dob, $gender, $privacy, $password);
         // Execute the prepared query.
         if ($stmt->execute()) {
             
         } else {
-            $error_msg .= "Database insert error. ";
+          $error_msg .= "Database insert error. ";
         }
     } else {
-        $error_msg .= "Couldn't prepare insert. ";
+      $error_msg .= "Couldn't prepare insert. ";
     }
 
     if (empty($error_msg)) {

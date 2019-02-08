@@ -34,4 +34,4 @@ $addscripts = "<script type='text/javascript' src='https://cdnjs.cloudflare.com/
   <script type='text/javascript' src='" . HOMEURL . "js/nosleep.min.js'></script>
 	<script type='text/javascript' src='" . HOMEURL . "js/record-activity.js'></script>";
 
-include $_SERVER['DOCUMENT_ROOT'] . '/includes/end-of-page.php'; ?>
+include $_SERVER['DOCUMENT_ROOT'] . '/includes/end_of_page.php'; ?>

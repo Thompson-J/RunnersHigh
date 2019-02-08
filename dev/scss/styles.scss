@@ -1,5 +1,6 @@
 $blue : #454E69;
 $red : #ff7755;
+$primaryFont : "Branding", sans-serif;
 
 @import 'fonts';
 @import 'animate.css';
@@ -12,5 +13,6 @@ $red : #ff7755;
 @import 'modal-theme';
 @import 'record-activity';
 @import 'activity';
+@import 'account';
 @import 'footer';
 @import 'responsive';

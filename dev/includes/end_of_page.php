@@ -1,6 +1,6 @@
 		<footer>
 
-			<p>&copy; 2018 Runners&apos; High</p>
+			<p>&copy; 2019 Runners&apos; High</p>
 			<ul class="clearfix">
 				<li><a href="<?php echo HOMEURL ?>">Home</a></li>
 				<?php 

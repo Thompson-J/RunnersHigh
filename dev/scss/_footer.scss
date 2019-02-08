@@ -1,7 +1,14 @@
+/* Footer
+=====================================*/
+
 footer {
+	position: absolute;
 	width: 100%;
+	height: 120px;
+	bottom: 0;
 	background: $blue;
 	color: white;
+	margin-top: 2em;
 	padding: 1em 1.3em;
 }
 

@@ -52,6 +52,13 @@
 				<div class="input-rule" id="register_bad_name"></div>
 				<input id="register_fullname" type="text" name="register_fullname" placeholder="Name…" required>
 
+				<label for="register_gender">Male</label>
+				<input id="register_gender_male" type="radio" name="register_gender" value="male">
+				<label for="register_gender">Female</label>
+				<input id="register_gender_female" type="radio" name="register_gender" value="female">
+
+				<input type="date" id="register_dob" name="register_dob" placeholder="yyyy-mm-dd">
+
 				<div class="input-rule" id="register_bad_email"></div>
 				<input id="register_email" type="email" name="register_email" placeholder="Email…" required>
 
@@ -60,6 +67,11 @@
 
 				<div class="input-rule" id="register_bad_password_cnfrm"></div>
 				<input id="register_password_cnfrm" type="password" name="register_password_cnfrm" placeholder="Confirm password…" required>
+
+				<label for="register_privacy">Public</label>
+				<input type="radio" id="register_privacy_public" name="register_privacy" value="public">
+				<label for="register_privacy">Private</label>
+				<input type="radio" id="register_privacy_private" name="register_privacy" value="private">
 
 				<!-- Added type="button" to change default button behaviour -->
 				<button type="button" id="register_submit" name="register_submit" onclick="registerSubmit()">Submit</button>
@@ -88,6 +100,7 @@
 
 					echo '<li><a href="' . HOMEURL . 'activity/">Activity</a></li>
 					<li><a href="' . HOMEURL . 'record-activity/">Record Activity</a></li>
+					<li><a href="' . HOMEURL . 'account/">Account</a></li>
 					<li><a href="' . HOMEURL . 'includes/logout.php">Logout</a></li>';
 				
 				} else {
@@ -129,6 +142,7 @@
 
 								echo '<li><a href="' . HOMEURL . 'activity/">Activity</a></li>
 								<li><a href="' . HOMEURL . 'record-activity/">Record Activity</a></li>
+								<li><a href="' . HOMEURL . 'account/">Account</a></li>
 								<li><a href="' . HOMEURL . 'includes/logout.php">Logout</a></li>';
 							
 							} else {

@@ -1,6 +1,6 @@
 <?php
 
-include_once 'psl-config.php';
+include_once 'psl_config.php';
 $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
 if($mysqli->connect_error) {
   exit('Error connecting to database'); //Should be a message a typical user could understand in production
