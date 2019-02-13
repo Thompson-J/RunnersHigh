@@ -11,7 +11,7 @@ include $_SERVER['DOCUMENT_ROOT'] . '/includes/head.php';
 
 			<main class="centre-container">
 
-				<p class="error-message"><span class="emphasis">Error 404</span><br>
+				<p class="error-message"><span class="italic">Error 404</span><br>
 				You're lost better go <a href="#" onclick="window.history.back();">back</a>.</p>
 
 			</main>

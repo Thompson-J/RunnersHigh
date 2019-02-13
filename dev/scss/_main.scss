@@ -133,16 +133,21 @@ body {
 	grid-area: leaderboard;
 }
 
-main {
-	padding-bottom: calc(2em + 120px);
+#site-wrapper {
+
+	main {
+		padding-bottom: calc(2em + 120px);
+
+		p {
+			font-family: $primaryFont;
+			font-variant-numeric: tabular-nums;
+		}
+
+	}
+
 }
 
-main p {
-	font-family: $primaryFont;
-	font-variant-numeric: tabular-nums;
-}
-
-.emphasis {
+.italic {
 	font-style: italic;
 }
 

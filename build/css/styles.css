@@ -818,14 +818,13 @@ body {
   width: 100%;
   grid-area: leaderboard; }
 
-main {
+#site-wrapper main {
   padding-bottom: calc(2em + 120px); }
+  #site-wrapper main p {
+    font-family: "Branding", sans-serif;
+    font-variant-numeric: tabular-nums; }
 
-main p {
-  font-family: "Branding", sans-serif;
-  font-variant-numeric: tabular-nums; }
-
-.emphasis {
+.italic {
   font-style: italic; }
 
 .error-message {

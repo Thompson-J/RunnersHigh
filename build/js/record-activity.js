@@ -103,19 +103,14 @@ $(function() {
 				document.body.classList.add('recording');
 
 				// Enable the wake lock
-				document.addEventListener('click', function enableNoSleep() {
+				wakelock.enable();
 
-					document.removeEventListener('click', enableNoSleep, false);
+				// Enter fullscreen
+				//launchIntoFullscreen(document.documentElement); // the whole page
+				launchIntoFullscreen(document.getElementById('timer')); // specific element
 
-					// Enter fullscreen
-					//launchIntoFullscreen(document.documentElement); // the whole page
-					launchIntoFullscreen(document.getElementById('timer')); // specific element
-					wakelock.enable();
-
-					// Vibrate
-					window.navigator.vibrate(200);
-				
-				}, false);
+				// Vibrate
+				window.navigator.vibrate(200);
 				
 				// Record today's date and start time
 				d = new moment();
@@ -296,6 +291,45 @@ $(function() {
 				  });
 
 			}
+
+			// Reinventing the wheel so use TomTom instead.
+			// Calculate the distance between two points using Pythagrean Theorem
+			// Loop through the coordinates
+			/*geolocation.forEach(function(element, index) {
+
+				// Skip the last index of the array
+				if (index < geolocation.length-1) {
+
+					// The x set of coordinates from the current array element
+					let xLon = element.longitude;
+					let xLat = element.latitude;
+					// The y set of coordinates, found in the next array element
+					let yLon = geolocation[index+1].longitude;
+					let yLat = geolocation[index+1].latitude;
+
+					// A derivation of the Pythagrean Theorem to calculate distance
+					// https://www.purplemath.com/modules/distform.htm
+					let pythagrean = Math.sqrt(Math.pow(xLon-xLon, 2) + Math.pow(xLat-yLat, 2));
+					//console.log(pythagrean);
+
+					// Store the hypotenuse as a string
+					let string = pythagrean.toString();
+
+					// Using a regular expression search for .0[…]0 in the hypotenuse
+					//Store the position of the first significant number
+					let regex = /\.0+/;
+					// Run the search
+					let regexResult = string.match(regex);
+					//console.log(signiNo);
+					// Find the starting position of the first significant number
+					let signStPos = regexResult['index'] + regexResult[0].length;
+					// Log the first 3 significant numbers
+					let threeSign = string.substr(signStPos, 3);
+					console.log(threeSign)
+
+				}
+
+			})*/
 
 			if (distance > 1000) distance = distance / 1000 + " kilometers";
 			else distance = distance + " meters";
