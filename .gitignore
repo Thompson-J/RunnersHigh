@@ -5,3 +5,4 @@ node_modules/**
 *.sublime-workspace
 package-lock.json
 */img/user_photos/*
+*.sql
